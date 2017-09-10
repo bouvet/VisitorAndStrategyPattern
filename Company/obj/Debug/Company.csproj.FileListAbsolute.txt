@@ -1,0 +1,12 @@
+C:\Git\soild-2\dotNet\Visitor\Company\bin\Debug\Company.dll
+C:\Git\soild-2\dotNet\Visitor\Company\bin\Debug\Company.pdb
+C:\Git\soild-2\dotNet\Visitor\Company\obj\Debug\Company.csprojResolveAssemblyReference.cache
+C:\Git\soild-2\dotNet\Visitor\Company\obj\Debug\Company.csproj.CoreCompileInputs.cache
+C:\Git\soild-2\dotNet\Visitor\Company\obj\Debug\Company.dll
+C:\Git\soild-2\dotNet\Visitor\Company\obj\Debug\Company.pdb
+C:\Git\Company\obj\Debug\Company.csprojResolveAssemblyReference.cache
+C:\Git\Company\obj\Debug\Company.csproj.CoreCompileInputs.cache
+C:\Git\Company\obj\Debug\Company.dll
+C:\Git\Company\obj\Debug\Company.pdb
+C:\Git\Company\bin\Debug\Company.dll
+C:\Git\Company\bin\Debug\Company.pdb
