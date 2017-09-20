@@ -10,3 +10,9 @@ C:\Git\Company\obj\Debug\Company.dll
 C:\Git\Company\obj\Debug\Company.pdb
 C:\Git\Company\bin\Debug\Company.dll
 C:\Git\Company\bin\Debug\Company.pdb
+C:\Git\VisitorAndStrategyPattern\CSharp\Company\bin\Debug\Company.dll
+C:\Git\VisitorAndStrategyPattern\CSharp\Company\bin\Debug\Company.pdb
+C:\Git\VisitorAndStrategyPattern\CSharp\Company\obj\Debug\Company.csprojResolveAssemblyReference.cache
+C:\Git\VisitorAndStrategyPattern\CSharp\Company\obj\Debug\Company.csproj.CoreCompileInputs.cache
+C:\Git\VisitorAndStrategyPattern\CSharp\Company\obj\Debug\Company.dll
+C:\Git\VisitorAndStrategyPattern\CSharp\Company\obj\Debug\Company.pdb

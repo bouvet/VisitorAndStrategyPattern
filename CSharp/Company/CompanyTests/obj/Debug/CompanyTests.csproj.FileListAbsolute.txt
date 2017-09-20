@@ -16,3 +16,12 @@ C:\Git\Company\CompanyTests\obj\Debug\CompanyTests.csprojResolveAssemblyReferenc
 C:\Git\Company\CompanyTests\obj\Debug\CompanyTests.csproj.CoreCompileInputs.cache
 C:\Git\Company\CompanyTests\obj\Debug\CompanyTests.dll
 C:\Git\Company\CompanyTests\obj\Debug\CompanyTests.pdb
+C:\Git\VisitorAndStrategyPattern\CSharp\Company\CompanyTests\bin\Debug\CompanyTests.dll
+C:\Git\VisitorAndStrategyPattern\CSharp\Company\CompanyTests\bin\Debug\CompanyTests.pdb
+C:\Git\VisitorAndStrategyPattern\CSharp\Company\CompanyTests\bin\Debug\Company.dll
+C:\Git\VisitorAndStrategyPattern\CSharp\Company\CompanyTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Git\VisitorAndStrategyPattern\CSharp\Company\CompanyTests\bin\Debug\Company.pdb
+C:\Git\VisitorAndStrategyPattern\CSharp\Company\CompanyTests\obj\Debug\CompanyTests.csprojResolveAssemblyReference.cache
+C:\Git\VisitorAndStrategyPattern\CSharp\Company\CompanyTests\obj\Debug\CompanyTests.csproj.CoreCompileInputs.cache
+C:\Git\VisitorAndStrategyPattern\CSharp\Company\CompanyTests\obj\Debug\CompanyTests.dll
+C:\Git\VisitorAndStrategyPattern\CSharp\Company\CompanyTests\obj\Debug\CompanyTests.pdb
