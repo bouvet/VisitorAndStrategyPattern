@@ -48,16 +48,20 @@ namespace Company
 
         public ReportJsonVisitor()
         {
-            _reportBuilder = new StringBuilder();
+            _reportBuilder = new StringBuilder("");
         }
 
         public void Visit(Employee employee)
         {
+            if (_reportBuilder.Length > 0)
+                _reportBuilder.Append(",");
             _reportBuilder.Append(string.Format(@"{{ ""workerType"": ""Employee"", ""name"": ""{0}"", ""position"": ""{1}"", ""monthlySalary"": {2} }}", employee.Name, employee.Position, employee.MonthySalary));
         }
 
         public void Visit(Consultant consultant)
         {
+            if (_reportBuilder.Length > 0)
+                _reportBuilder.Append(",");
             _reportBuilder.Append(string.Format(@"{{ ""workerType"": ""Consultant"", ""name"": ""{0}"", ""company"": ""{1}"", ""monthlyFee"": {2} }}", consultant.Name, consultant.Company, consultant.MonthlyFee));
         }
 
