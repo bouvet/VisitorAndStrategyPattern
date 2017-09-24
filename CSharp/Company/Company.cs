@@ -22,14 +22,10 @@ namespace Company
         {
             get
             {
-                StringBuilder builder = new StringBuilder();
+                var visitor = new ReportPlainTextVisitor();
                 foreach (var worker in _workers)
-                {
-                    if (builder.Length > 0)
-                        builder.Append(Environment.NewLine);
-                    builder.Append(worker.ReportPlainText);
-                }
-                return builder.ToString();
+                    worker.Accept(visitor);
+                return visitor.Report;
             }
         }
 
@@ -37,13 +33,10 @@ namespace Company
         {
             get
             {
-                StringBuilder builder = new StringBuilder("[");
+                var visitor = new ReportJsonVisitor();
                 foreach (var worker in _workers)
-                {
-                    builder.Append(worker.ReportJson);
-                }
-                builder.Append("]");
-                return builder.ToString();
+                    worker.Accept(visitor);
+                return visitor.Report;
             }
         }
     }

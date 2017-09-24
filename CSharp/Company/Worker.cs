@@ -8,8 +8,7 @@
         }
 
         public string Name { get; private set; }
-        public abstract string ReportPlainText { get; }
-        public abstract string ReportJson { get; }
+        public abstract void Accept(IWorkerVisitor visitor);
     }
 
     public class Employee : Worker
@@ -24,20 +23,9 @@
         public string Position { get; private set; }
         public decimal MonthySalary { get; private set; }
 
-        public override string ReportPlainText
+        public override void Accept(IWorkerVisitor visitor)
         {
-            get
-            {
-                return string.Format("Employee {0} works as {1} and earns {2} per month.", Name, Position, MonthySalary);
-            }
-        }
-
-        public override string ReportJson
-        {
-            get
-            {
-                return string.Format(@"{{ ""workerType"": ""Employee"", ""name"": ""{0}"", ""position"": ""{1}"", ""monthlySalary"": {2} }}", Name, Position, MonthySalary);
-            }
+            visitor.Visit(this);
         }
     }
 
@@ -53,21 +41,9 @@
         public string Company { get; private set; }
         public decimal MonthlyFee { get; private set; }
 
-        public override string ReportPlainText
+        public override void Accept(IWorkerVisitor visitor)
         {
-            get
-            {
-                return string.Format("Consultant {0} from {1} costs {2} per month.", Name, Company, MonthlyFee);
-            }
+            visitor.Visit(this);
         }
-
-        public override string ReportJson
-        {
-            get
-            {
-                return string.Format(@"{{ ""workerType"": ""Consultant"", ""name"": ""{0}"", ""company"": ""{1}"", ""monthlyFee"": {2} }}", Name, Company, MonthlyFee);
-            }
-        }
-
     }
 }
