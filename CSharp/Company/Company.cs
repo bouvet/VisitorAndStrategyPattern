@@ -40,6 +40,8 @@ namespace Company
                 StringBuilder builder = new StringBuilder("[");
                 foreach (var worker in _workers)
                 {
+                    if (builder.Length > 1)
+                        builder.Append(",");
                     builder.Append(worker.ReportJson);
                 }
                 builder.Append("]");

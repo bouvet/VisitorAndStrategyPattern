@@ -44,8 +44,8 @@ namespace CompanyTests
             var company = CreateTestCompany();
             var result = company.WorkerReportJson;
             var expected = "[" +
-                @"{ ""workerType"": ""Employee"", ""name"": ""Erna Solberg"", ""position"": ""CEO"", ""monthlySalary"": 100000 }" +
-                @"{ ""workerType"": ""Consultant"", ""name"": ""Bjarne Håkon Hanssen"", ""company"": ""First House"", ""monthlyFee"": 80000 }" +
+                @"{ ""workerType"": ""Employee"", ""name"": ""Erna Solberg"", ""position"": ""CEO"", ""monthlySalary"": 100000 }," +
+                @"{ ""workerType"": ""Consultant"", ""name"": ""Bjarne Håkon Hanssen"", ""company"": ""First House"", ""monthlyFee"": 80000 }," +
                 @"{ ""workerType"": ""Employee"", ""name"": ""Siv Jensen"", ""position"": ""CFO"", ""monthlySalary"": 70000 }" +
                 "]";
 
