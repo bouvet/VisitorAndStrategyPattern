@@ -4,17 +4,14 @@ using System;
 
 namespace CompanyTests
 {
-    /* 
-     * The abstract base-class Worker forces sub-classes to calculate YearlyCost and Report.
-     * This however, violates the Open-Closed principle, as we need to change the Worker class and sub-classes if new functionality like this should be added.
-     * 
-     * So, we would like to rewrite the Worker-class to use the visitor-pattern so that it is open for new types of report in the future.
+    /* Den abstrakte klassen Worker har to implementasjoner, Employee og Consultant.
+     * Begge disse klassene implementerer metodene ReportPlainText og ReportJson.
+     * Oppgaven går ut på å refaktorere slik at denne logikken flyttes ut av Worker og sub-klasser uten å bryte testene.
+     * Dette kan gjøres vha Visitor- og/eller Strategy-pattern.
      * http://www.oodesign.com/visitor-pattern.html
-     * 
-     * 1. Make the Worker-classes accept a visitor. 
-     * 2. Rewrite the existing yearly-cost and report functionality as visitors without breaking the tests.
-     * 
-     * */
+     * http://www.oodesign.com/strategy-pattern.html
+     */
+
     [TestClass]
     public class CompanyTest
     {
