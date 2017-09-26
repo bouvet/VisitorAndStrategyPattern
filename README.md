@@ -6,5 +6,5 @@ Oppgaven går ut på å refaktorere slik at denne logikken flyttes ut av Worker 
 
 Dette kan gjøres vha Visitor- og/eller Strategy-pattern.
 
-http://www.oodesign.com/visitor-pattern.html
-http://www.oodesign.com/strategy-pattern.html
+* http://www.oodesign.com/visitor-pattern.html
+* http://www.oodesign.com/strategy-pattern.html
