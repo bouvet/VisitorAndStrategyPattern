@@ -28,22 +28,22 @@ namespace CompanyTests
         public void WorkerReportPlainText_should_return_information_on_all_workers_separated_by_lineBreak()
         {
             var company = CreateTestCompany();
-            var result = company.WorkerReportPlainText.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            var result = company.GeneratePlainTextWorkerReport().Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             Assert.AreEqual(3, result.Length);
-            Assert.AreEqual("Employee Erna Solberg works as CEO and earns 100000 per month.", result[0]);
-            Assert.AreEqual("Consultant Bjarne Håkon Hanssen from First House costs 80000 per month.", result[1]);
-            Assert.AreEqual("Employee Siv Jensen works as CFO and earns 70000 per month.", result[2]);
+            Assert.AreEqual("Erna Solberg is working as Employee at our company.", result[0]);
+            Assert.AreEqual("Bjarne Håkon Hanssen is working as Consultant at our company.", result[1]);
+            Assert.AreEqual("Siv Jensen is working as Employee at our company.", result[2]);
         }
 
         [TestMethod]
         public void WorkerReportJson_should_return_information_on_all_workers_by_json()
         {
             var company = CreateTestCompany();
-            var result = company.WorkerReportJson;
+            var result = company.GenerateJsonWorkerReport();
             var expected = "[" +
-                @"{ ""workerType"": ""Employee"", ""name"": ""Erna Solberg"", ""position"": ""CEO"", ""monthlySalary"": 100000 }," +
-                @"{ ""workerType"": ""Consultant"", ""name"": ""Bjarne Håkon Hanssen"", ""company"": ""First House"", ""monthlyFee"": 80000 }," +
-                @"{ ""workerType"": ""Employee"", ""name"": ""Siv Jensen"", ""position"": ""CFO"", ""monthlySalary"": 70000 }" +
+                @"{ ""workerType"": ""Employee"", ""name"": ""Erna Solberg"" }," +
+                @"{ ""workerType"": ""Consultant"", ""name"": ""Bjarne Håkon Hanssen"" }," +
+                @"{ ""workerType"": ""Employee"", ""name"": ""Siv Jensen"" }" +
                 "]";
 
             Assert.AreEqual(expected, result);

@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 
 namespace Company
@@ -18,26 +18,27 @@ namespace Company
             _workers.Add(worker);
         }
 
-        public string WorkerReportPlainText
+        public string GeneratePlainTextWorkerReport()
         {
-            get
+            StringBuilder reportBuilder = new StringBuilder();
+            foreach (var worker in _workers)
             {
-                var visitor = new ReportPlainTextVisitor();
-                foreach (var worker in _workers)
-                    worker.Accept(visitor);
-                return visitor.Report;
+                worker.SetReportFormat(new PlainTextReport());
+                reportBuilder.AppendLine(worker.Report());
             }
+            return reportBuilder.ToString();
         }
 
-        public string WorkerReportJson
+        public string GenerateJsonWorkerReport()
         {
-            get
+            StringBuilder reportBuilder = new StringBuilder("[");
+            foreach (var worker in _workers)
             {
-                var visitor = new ReportJsonVisitor();
-                foreach (var worker in _workers)
-                    worker.Accept(visitor);
-                return visitor.Report;
+                worker.SetReportFormat(new JsonReport());
+                reportBuilder.AppendLine(worker.Report() + ",");
             }
+            string result = reportBuilder.ToString();
+            return result.TrimEnd(',') + "]";
         }
     }
 }

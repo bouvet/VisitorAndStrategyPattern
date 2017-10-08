@@ -1,14 +1,30 @@
-﻿namespace Company
+﻿using System;
+
+namespace Company
 {
     public abstract class Worker
     {
-        public Worker(string name)
+        private IReport _reportType;
+
+        protected Worker(string name)
         {
             Name = name;
+            _reportType = new PlainTextReport();
         }
 
-        public string Name { get; private set; }
-        public abstract void Accept(IWorkerVisitor visitor);
+        public string Name { get; }
+
+        public string WorkerType { get; protected set; }
+
+        public virtual void SetReportFormat(IReport reportFormat)
+        {
+            _reportType = reportFormat;
+        }
+
+        public virtual string Report()
+        {
+            return _reportType.GenerateReport(this);
+        }
     }
 
     public class Employee : Worker
@@ -18,15 +34,11 @@
         {
             Position = position;
             MonthySalary = monthlySalary;
+            WorkerType = "Employee";
         }
 
         public string Position { get; private set; }
         public decimal MonthySalary { get; private set; }
-
-        public override void Accept(IWorkerVisitor visitor)
-        {
-            visitor.Visit(this);
-        }
     }
 
     public class Consultant : Worker
@@ -36,14 +48,10 @@
         {
             Company = company;
             MonthlyFee = monthlyFee;
+            WorkerType = "Consultant";
         }
 
         public string Company { get; private set; }
         public decimal MonthlyFee { get; private set; }
-
-        public override void Accept(IWorkerVisitor visitor)
-        {
-            visitor.Visit(this);
-        }
     }
 }
