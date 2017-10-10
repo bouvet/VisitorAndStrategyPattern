@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
 using System.Text;
 
 namespace Company
@@ -18,27 +17,30 @@ namespace Company
             _workers.Add(worker);
         }
 
-        public string GeneratePlainTextWorkerReport()
+        public string GenerateShortWorkerReport()
         {
             StringBuilder reportBuilder = new StringBuilder();
             foreach (var worker in _workers)
             {
-                worker.SetReportFormat(new PlainTextReport());
-                reportBuilder.AppendLine(worker.Report());
+                // Strategy pattern: Vi endrer oppførsel, slik at worker.Report() vil generere en kort rapport
+                worker.SetReportFormat(new ShortReport());
+                var shortReport = worker.Report();
+                reportBuilder.AppendLine(shortReport);
             }
             return reportBuilder.ToString();
         }
 
-        public string GenerateJsonWorkerReport()
+        public string GenerateDetailedWorkerReport()
         {
-            StringBuilder reportBuilder = new StringBuilder("[");
+            StringBuilder reportBuilder = new StringBuilder();
             foreach (var worker in _workers)
             {
-                worker.SetReportFormat(new JsonReport());
-                reportBuilder.AppendLine(worker.Report() + ",");
+                // Strategy pattern: Vi endrer oppførsel, slik at worker.Report() vil generere en detaljert rapport
+                worker.SetReportFormat(new DetailedReport());
+                var detailedReport = worker.Report();
+                reportBuilder.AppendLine(detailedReport);
             }
-            string result = reportBuilder.ToString();
-            return result.TrimEnd(',') + "]";
+            return reportBuilder.ToString();
         }
     }
 }

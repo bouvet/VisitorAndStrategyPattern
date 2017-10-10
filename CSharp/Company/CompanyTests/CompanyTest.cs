@@ -4,11 +4,11 @@ using System;
 
 namespace CompanyTests
 {
-    /* Den abstrakte klassen Worker har to implementasjoner, Employee og Consultant.
-     * Begge disse klassene implementerer metodene ReportPlainText og ReportJson.
+    /* Et Company har flere Workers, og ønsker å kunne generere flere ansatt-rapporter.
+     * Akkurat nå finnes det to rapporter, en ShortReport og en DetailedReport
+     * Den abstrakte klassen Worker har to implementasjoner, Employee og Consultant.
      * Oppgaven går ut på å refaktorere slik at denne logikken flyttes ut av Worker og sub-klasser uten å bryte testene.
-     * Dette kan gjøres vha Visitor- og/eller Strategy-pattern.
-     * http://www.oodesign.com/visitor-pattern.html
+     * Dette kan gjøres vha Strategy-pattern.
      * http://www.oodesign.com/strategy-pattern.html
      */
 
@@ -25,28 +25,27 @@ namespace CompanyTests
         }
 
         [TestMethod]
-        public void WorkerReportPlainText_should_return_information_on_all_workers_separated_by_lineBreak()
+        public void GenerateShortWorkerReport_should_return_name_and_workertype_for_all_workers_separated_by_lineBreak()
         {
             var company = CreateTestCompany();
-            var result = company.GeneratePlainTextWorkerReport().Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-            Assert.AreEqual(3, result.Length);
-            Assert.AreEqual("Erna Solberg is working as Employee at our company.", result[0]);
-            Assert.AreEqual("Bjarne Håkon Hanssen is working as Consultant at our company.", result[1]);
-            Assert.AreEqual("Siv Jensen is working as Employee at our company.", result[2]);
+            var shortReport = company.GenerateShortWorkerReport();
+            var splitUpReport = shortReport.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            Assert.AreEqual(3, splitUpReport.Length);
+            Assert.AreEqual("Erna Solberg is working as Employee at our company.", splitUpReport[0]);
+            Assert.AreEqual("Bjarne Håkon Hanssen is working as Consultant at our company.", splitUpReport[1]);
+            Assert.AreEqual("Siv Jensen is working as Employee at our company.", splitUpReport[2]);
         }
 
         [TestMethod]
-        public void WorkerReportJson_should_return_information_on_all_workers_by_json()
+        public void GenerateDetailedWorkerReport_should_return_detailed_information_on_all_workers_separated_by_lineBreak()
         {
             var company = CreateTestCompany();
-            var result = company.GenerateJsonWorkerReport();
-            var expected = "[" +
-                @"{ ""workerType"": ""Employee"", ""name"": ""Erna Solberg"" }," +
-                @"{ ""workerType"": ""Consultant"", ""name"": ""Bjarne Håkon Hanssen"" }," +
-                @"{ ""workerType"": ""Employee"", ""name"": ""Siv Jensen"" }" +
-                "]";
-
-            Assert.AreEqual(expected, result);
+            var detailedReport = company.GenerateDetailedWorkerReport();
+            var splitUpReport = detailedReport.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            Assert.AreEqual(3, splitUpReport.Length);
+            Assert.AreEqual("Erna Solberg is working as Employee at our company. Erna Solberg works as CEO, and has a monthly salary of 100000", splitUpReport[0]);
+            Assert.AreEqual("Bjarne Håkon Hanssen is working as Consultant at our company. Bjarne Håkon Hanssen currently works for First House, for a monthy fee of 80000", splitUpReport[1]);
+            Assert.AreEqual("Siv Jensen is working as Employee at our company. Siv Jensen works as CFO, and has a monthly salary of 70000", splitUpReport[2]);
         }
     }
 }

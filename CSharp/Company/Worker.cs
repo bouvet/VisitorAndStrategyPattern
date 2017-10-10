@@ -1,22 +1,21 @@
-﻿using System;
-
-namespace Company
+﻿namespace Company
 {
     public abstract class Worker
     {
         private IReport _reportType;
 
-        protected Worker(string name)
+        protected Worker(string name, string workerType)
         {
             Name = name;
-            _reportType = new PlainTextReport();
+            WorkerType = workerType;
+            _reportType = new ShortReport();
         }
 
         public string Name { get; }
 
-        public string WorkerType { get; protected set; }
+        public string WorkerType { get; }
 
-        public virtual void SetReportFormat(IReport reportFormat)
+        public void SetReportFormat(IReport reportFormat)
         {
             _reportType = reportFormat;
         }
@@ -25,33 +24,41 @@ namespace Company
         {
             return _reportType.GenerateReport(this);
         }
+
+        public abstract string GetWorkerDetails();
     }
 
     public class Employee : Worker
     {
         public Employee(string name, string position, decimal monthlySalary)
-            : base(name)
+            : base(name, "Employee")
         {
             Position = position;
             MonthySalary = monthlySalary;
-            WorkerType = "Employee";
         }
 
         public string Position { get; private set; }
         public decimal MonthySalary { get; private set; }
+        public override string GetWorkerDetails()
+        {
+            return $"{Name} works as {Position}, and has a monthly salary of {MonthySalary}";
+        }
     }
 
     public class Consultant : Worker
     {
         public Consultant(string name, string company, decimal monthlyFee)
-            : base(name)
+            : base(name, "Consultant")
         {
             Company = company;
             MonthlyFee = monthlyFee;
-            WorkerType = "Consultant";
         }
 
         public string Company { get; private set; }
         public decimal MonthlyFee { get; private set; }
+        public override string GetWorkerDetails()
+        {
+            return $"{Name} currently works for {Company}, for a monthy fee of {MonthlyFee}";
+        }
     }
 }
