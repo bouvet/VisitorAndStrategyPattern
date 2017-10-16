@@ -5,7 +5,7 @@ using System;
 namespace CompanyTests
 {
     /* Et Company har flere Workers, og ønsker å kunne generere flere ansatt-rapporter.
-     * Akkurat nå finnes det to rapporter, en ShortReport og en DetailedReport
+     * Akkurat nå finnes det to rapporter, en XmlReport og en JsonReport
      * Den abstrakte klassen Worker har to implementasjoner, Employee og Consultant.
      * Oppgaven går ut på å refaktorere slik at denne logikken flyttes ut av Worker og sub-klasser uten å bryte testene.
      * Dette kan gjøres vha Strategy-pattern.
@@ -25,10 +25,10 @@ namespace CompanyTests
         }
 
         [TestMethod]
-        public void GenerateShortWorkerReport_should_return_name_and_workertype_for_all_workers_separated_by_lineBreak()
+        public void GenerateJsonReport_should_return_all_properties_of_all_workers_as_Json()
         {
             var company = CreateTestCompany();
-            var shortReport = company.GenerateShortWorkerReport();
+            var shortReport = company.GenerateJsonReport();
             var splitUpReport = shortReport.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             Assert.AreEqual(3, splitUpReport.Length);
             Assert.AreEqual("Erna Solberg is working as Employee at our company.", splitUpReport[0]);
@@ -37,10 +37,10 @@ namespace CompanyTests
         }
 
         [TestMethod]
-        public void GenerateDetailedWorkerReport_should_return_detailed_information_on_all_workers_separated_by_lineBreak()
+        public void GenerateXmlReport_should_return_all_properties_of_all_workers_as_Xml()
         {
             var company = CreateTestCompany();
-            var detailedReport = company.GenerateDetailedWorkerReport();
+            var detailedReport = company.GenerateXmlReport();
             var splitUpReport = detailedReport.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             Assert.AreEqual(3, splitUpReport.Length);
             Assert.AreEqual("Erna Solberg is working as Employee at our company. Erna Solberg works as CEO, and has a monthly salary of 100000", splitUpReport[0]);

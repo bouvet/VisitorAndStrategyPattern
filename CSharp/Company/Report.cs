@@ -1,24 +1,37 @@
 ﻿
+using System.Collections.Generic;
+using System.Text;
+
 namespace Company
 {
-    public interface IReport
+    public interface IReportStrategy
     {
-        string GenerateReport(Worker worker);
+        string GenerateReport(Dictionary<string, string> reportData);
     }
 
-    public class ShortReport : IReport
+    public class XmlReport : IReportStrategy
     {
-        public string GenerateReport(Worker worker)
+        public string GenerateReport(Dictionary<string, string> reportData)
         {
-            return $"{worker.Name} is working as {worker.WorkerType} at our company.";
+            var reportBuilder = new StringBuilder("");
+            foreach (var reportLine in reportData)
+            {
+                reportBuilder.AppendLine(string.Format("<{0}>{1}</{0}>", reportLine.Key, reportLine.Value));
+            }
+            return reportBuilder.ToString();
         }
     }
 
-    public class DetailedReport : IReport
+    public class JsonReport : IReportStrategy
     {
-        public string GenerateReport(Worker worker)
+        public string GenerateReport(Dictionary<string, string> reportData)
         {
-            return $"{worker.Name} is working as {worker.WorkerType} at our company. {worker.GetWorkerDetails()}";
+            var reportBuilder = new StringBuilder("");
+            foreach (var reportLine in reportData)
+            {
+                reportBuilder.AppendLine(string.Format("{{{0}:{1}}}>", reportLine.Key, reportLine.Value));
+            }
+            return reportBuilder.ToString();
         }
     }
 }

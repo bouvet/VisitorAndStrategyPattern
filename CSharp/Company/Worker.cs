@@ -1,31 +1,33 @@
-﻿namespace Company
+﻿using System.Collections.Generic;
+
+namespace Company
 {
     public abstract class Worker
     {
-        private IReport _reportType;
+        private IReportStrategy _reportStrategy;
 
         protected Worker(string name, string workerType)
         {
             Name = name;
             WorkerType = workerType;
-            _reportType = new ShortReport();
+            _reportStrategy = new XmlReport();  // Default rapporttype
         }
 
         public string Name { get; }
 
         public string WorkerType { get; }
 
-        public void SetReportFormat(IReport reportFormat)
+        public void SetReportStrategy(IReportStrategy reportStrategy)
         {
-            _reportType = reportFormat;
+            _reportStrategy = reportStrategy;
         }
 
         public virtual string Report()
         {
-            return _reportType.GenerateReport(this);
+            return _reportStrategy.GenerateReport(GetReportData());
         }
 
-        public abstract string GetWorkerDetails();
+        public abstract Dictionary<string, string> GetReportData();
     }
 
     public class Employee : Worker
@@ -39,9 +41,14 @@
 
         public string Position { get; private set; }
         public decimal MonthySalary { get; private set; }
-        public override string GetWorkerDetails()
+        public override Dictionary<string, string> GetReportData()
         {
-            return $"{Name} works as {Position}, and has a monthly salary of {MonthySalary}";
+            var reportData = new Dictionary<string, string>();
+            reportData.Add("Name", Name);
+            reportData.Add("WorkerType", WorkerType);
+            reportData.Add("Position", Position);
+            reportData.Add("MonthlySalary", MonthySalary.ToString());
+            return reportData;
         }
     }
 
@@ -56,9 +63,14 @@
 
         public string Company { get; private set; }
         public decimal MonthlyFee { get; private set; }
-        public override string GetWorkerDetails()
+        public override Dictionary<string, string> GetReportData()
         {
-            return $"{Name} currently works for {Company}, for a monthy fee of {MonthlyFee}";
+            var reportData = new Dictionary<string, string>();
+            reportData.Add("Name", Name);
+            reportData.Add("WorkerType", WorkerType);
+            reportData.Add("Company", Company);
+            reportData.Add("MonthlyFee", MonthlyFee.ToString());
+            return reportData;
         }
     }
 }

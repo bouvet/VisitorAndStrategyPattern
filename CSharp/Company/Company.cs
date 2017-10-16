@@ -17,26 +17,26 @@ namespace Company
             _workers.Add(worker);
         }
 
-        public string GenerateShortWorkerReport()
+        public string GenerateJsonReport()
         {
             StringBuilder reportBuilder = new StringBuilder();
             foreach (var worker in _workers)
             {
-                // Strategy pattern: Vi endrer oppførsel, slik at worker.Report() vil generere en kort rapport
-                worker.SetReportFormat(new ShortReport());
+                // Strategy pattern: Vi endrer oppførsel, slik at worker.Report() vil generere en Json-rapport
+                worker.SetReportStrategy(new JsonReport());
                 var shortReport = worker.Report();
                 reportBuilder.AppendLine(shortReport);
             }
             return reportBuilder.ToString();
         }
 
-        public string GenerateDetailedWorkerReport()
+        public string GenerateXmlReport()
         {
             StringBuilder reportBuilder = new StringBuilder();
             foreach (var worker in _workers)
             {
-                // Strategy pattern: Vi endrer oppførsel, slik at worker.Report() vil generere en detaljert rapport
-                worker.SetReportFormat(new DetailedReport());
+                // Strategy pattern: Vi endrer oppførsel, slik at worker.Report() vil generere en Xml-rapport
+                worker.SetReportStrategy(new XmlReport());
                 var detailedReport = worker.Report();
                 reportBuilder.AppendLine(detailedReport);
             }
