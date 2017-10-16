@@ -5,9 +5,9 @@ using System;
 namespace CompanyTests
 {
     /* Den abstrakte klassen Worker har to implementasjoner, Employee og Consultant.
-     * Begge disse klassene implementerer metodene ReportPlainText og ReportJson.
+     * Begge disse klassene implementerer metodene ReportPlainText, ReportJson og CalculateYearlyCost.
      * Oppgaven går ut på å refaktorere slik at denne logikken flyttes ut av Worker og sub-klasser uten å bryte testene.
-     * Dette kan gjøres vha Visitor- og/eller Strategy-pattern.
+     * Bruk Strategy til å generere rapporter og Visitor til å beregne årlig kost.
      * http://www.oodesign.com/visitor-pattern.html
      * http://www.oodesign.com/strategy-pattern.html
      */
@@ -47,6 +47,15 @@ namespace CompanyTests
                 "]";
 
             Assert.AreEqual(expected, result);
+        }
+
+        // Hint: Bruk Visitor-pattern.
+        [TestMethod]
+        public void YearlyCost_should_return_total_cost_for_all_workers()
+        {
+            var company = CreateTestCompany();
+            var result = company.CalculateYearlyCost();
+            Assert.AreEqual(3000000, result);
         }
     }
 }

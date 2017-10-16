@@ -48,5 +48,15 @@ namespace Company
                 return builder.ToString();
             }
         }
+
+        public decimal CalculateYearlyCost()
+        {
+            decimal yearlyCost = 0;
+            foreach (var worker in _workers)
+            {
+                yearlyCost += worker.CalculateYearlyCost();
+            }
+            return yearlyCost;
+        }
     }
 }

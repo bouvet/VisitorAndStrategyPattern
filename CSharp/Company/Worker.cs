@@ -10,6 +10,7 @@
         public string Name { get; private set; }
         public abstract string ReportPlainText { get; }
         public abstract string ReportJson { get; }
+        public abstract decimal CalculateYearlyCost();
     }
 
     public class Employee : Worker
@@ -38,6 +39,11 @@
             {
                 return string.Format(@"{{ ""workerType"": ""Employee"", ""name"": ""{0}"", ""position"": ""{1}"", ""monthlySalary"": {2} }}", Name, Position, MonthySalary);
             }
+        }
+
+        public override decimal CalculateYearlyCost()
+        {
+            return MonthySalary * 12;
         }
     }
 
@@ -69,5 +75,9 @@
             }
         }
 
+        public override decimal CalculateYearlyCost()
+        {
+            return MonthlyFee * 12;
+        }
     }
 }
