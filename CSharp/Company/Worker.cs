@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Company
 {
@@ -28,19 +29,24 @@ namespace Company
         }
 
         public abstract Dictionary<string, string> GetReportData();
+
+        public abstract void Accept(IWorkerVisitor visitor);
     }
 
     public class Employee : Worker
     {
-        public Employee(string name, string position, decimal monthlySalary)
+        public Employee(string name, string position, decimal monthlySalary, decimal parttimePercentage)
             : base(name, "Employee")
         {
             Position = position;
             MonthySalary = monthlySalary;
+            ParttimePercentage = parttimePercentage;
         }
 
         public string Position { get; private set; }
         public decimal MonthySalary { get; private set; }
+        public decimal ParttimePercentage { get; private set; }
+
         public override Dictionary<string, string> GetReportData()
         {
             var reportData = new Dictionary<string, string>();
@@ -50,6 +56,12 @@ namespace Company
             reportData.Add("MonthlySalary", MonthySalary.ToString());
             return reportData;
         }
+
+        public override void Accept(IWorkerVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
+
     }
 
     public class Consultant : Worker
@@ -71,6 +83,11 @@ namespace Company
             reportData.Add("Company", Company);
             reportData.Add("MonthlyFee", MonthlyFee.ToString());
             return reportData;
+        }
+
+        public override void Accept(IWorkerVisitor visitor)
+        {
+            visitor.Visit(this);
         }
     }
 }

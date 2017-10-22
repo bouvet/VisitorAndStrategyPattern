@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyPattern", "StrategyPattern.csproj", "{4BBF25EB-0089-4C7D-8C5A-229EF3229B16}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Company", "Company.csproj", "{4BBF25EB-0089-4C7D-8C5A-229EF3229B16}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyPatternTests", "CompanyTests\StrategyPatternTests.csproj", "{94EF6922-771E-4018-A468-98F56F60EE51}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompanyTests", "CompanyTests\CompanyTests.csproj", "{94EF6922-771E-4018-A468-98F56F60EE51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

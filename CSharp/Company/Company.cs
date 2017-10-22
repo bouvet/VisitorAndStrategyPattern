@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Company
@@ -41,6 +42,29 @@ namespace Company
                 reportBuilder.AppendLine(detailedReport);
             }
             return reportBuilder.ToString();
+        }
+
+        public decimal CalculateYearlyCost()
+        {
+            var visitor = new YearlyCostVisitor();
+            foreach (var worker in _workers)
+            {
+                worker.Accept(visitor);
+            }
+            return visitor.YearlyCost;
+        }
+
+        public decimal CalculateAverageHourlyCost()
+        {
+            if (_workers.Count == 0)
+                return 0;
+
+            var visitor = new HourlyCostVisitor();
+            foreach (var worker in _workers)
+            {
+                worker.Accept(visitor);
+            }
+            return Math.Round(visitor.HourlyCost / 3, 2);
         }
     }
 }
