@@ -1,4 +1,6 @@
-﻿namespace Company
+﻿using System;
+
+namespace Company
 {
     public abstract class Worker
     {
@@ -11,19 +13,22 @@
         public abstract string ReportPlainText { get; }
         public abstract string ReportJson { get; }
         public abstract decimal CalculateYearlyCost();
+        public abstract decimal CalculateHourlyCost();
     }
 
     public class Employee : Worker
     {
-        public Employee(string name, string position, decimal monthlySalary)
+        public Employee(string name, string position, decimal monthlySalary, decimal parttimePercentage)
             : base(name)
         {
             Position = position;
             MonthySalary = monthlySalary;
+            ParttimePercentage = parttimePercentage;
         }
 
         public string Position { get; private set; }
         public decimal MonthySalary { get; private set; }
+        public decimal ParttimePercentage { get; private set; }
 
         public override string ReportPlainText
         {
@@ -44,6 +49,12 @@
         public override decimal CalculateYearlyCost()
         {
             return MonthySalary * 12;
+        }
+
+        public override decimal CalculateHourlyCost()
+        {
+            var hoursPerMonth = (decimal)37.5 * 4 * (ParttimePercentage / 100);
+            return Math.Round(MonthySalary / hoursPerMonth, 2);
         }
     }
 
@@ -78,6 +89,12 @@
         public override decimal CalculateYearlyCost()
         {
             return MonthlyFee * 12;
+        }
+
+        public override decimal CalculateHourlyCost()
+        {
+            var hoursPerMonth = (decimal) (37.5 * 4);
+            return Math.Round(MonthlyFee / hoursPerMonth, 2);
         }
     }
 }

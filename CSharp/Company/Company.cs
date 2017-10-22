@@ -58,5 +58,19 @@ namespace Company
             }
             return yearlyCost;
         }
+
+        public decimal CalculateAverageHourlyCost()
+        {
+            if (_workers.Count == 0)
+                return 0;
+
+            decimal sumHourlyCost = 0;
+            foreach (var worker in _workers)
+            {
+                sumHourlyCost += worker.CalculateHourlyCost();
+            }
+
+            return Math.Round(sumHourlyCost / _workers.Count, 2);
+        }
     }
 }
