@@ -1,22 +1,21 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 
 namespace Company
 {
     public interface IReportStrategy
     {
-        string GenerateReport(Dictionary<string, string> reportData);
+        string GenerateWorkerReport(Dictionary<string, string> reportData);
     }
 
     public class XmlReport : IReportStrategy
     {
-        public string GenerateReport(Dictionary<string, string> reportData)
+        public string GenerateWorkerReport(Dictionary<string, string> reportData)
         {
-            var reportBuilder = new StringBuilder("");
+            var reportBuilder = new StringBuilder("<");
             foreach (var reportLine in reportData)
             {
-                reportBuilder.AppendLine(string.Format("<{0}>{1}</{0}>", reportLine.Key, reportLine.Value));
+                reportBuilder.AppendLine($"<{reportLine.Key}>{reportLine.Value}</{reportLine.Key}>");
             }
             return reportBuilder.ToString();
         }
@@ -24,13 +23,16 @@ namespace Company
 
     public class JsonReport : IReportStrategy
     {
-        public string GenerateReport(Dictionary<string, string> reportData)
+        public string GenerateWorkerReport(Dictionary<string, string> reportData)
         {
-            var reportBuilder = new StringBuilder("");
-            foreach (var reportLine in reportData)
+            var reportBuilder = new StringBuilder("{");
+            reportBuilder.AppendLine("\"Worker\": {");
+            foreach(var reportLine in reportData)
             {
-                reportBuilder.AppendLine(string.Format("{{{0}:{1}}}>", reportLine.Key, reportLine.Value));
+                reportBuilder.AppendLine($"\"{reportLine.Key}\":\"{reportLine.Value}\",");
             }
+            reportBuilder.RemoveLastComma();
+            reportBuilder.AppendLine("}},");
             return reportBuilder.ToString();
         }
     }

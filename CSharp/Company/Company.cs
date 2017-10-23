@@ -20,14 +20,16 @@ namespace Company
 
         public string GenerateJsonReport()
         {
-            StringBuilder reportBuilder = new StringBuilder();
+            StringBuilder reportBuilder = new StringBuilder("{ \"Workers\" : [");
             foreach (var worker in _workers)
             {
                 // Strategy pattern: Vi endrer oppførsel, slik at worker.Report() vil generere en Json-rapport
                 worker.SetReportStrategy(new JsonReport());
-                var shortReport = worker.Report();
-                reportBuilder.AppendLine(shortReport);
+                var jsonReport = worker.Report();
+                reportBuilder.AppendLine(jsonReport);
             }
+            reportBuilder.RemoveLastComma();
+            reportBuilder.AppendLine("]}");
             return reportBuilder.ToString();
         }
 
@@ -38,8 +40,8 @@ namespace Company
             {
                 // Strategy pattern: Vi endrer oppførsel, slik at worker.Report() vil generere en Xml-rapport
                 worker.SetReportStrategy(new XmlReport());
-                var detailedReport = worker.Report();
-                reportBuilder.AppendLine(detailedReport);
+                var xmlReport = worker.Report();
+                reportBuilder.AppendLine(xmlReport);
             }
             return reportBuilder.ToString();
         }
