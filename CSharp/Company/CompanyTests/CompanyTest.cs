@@ -1,7 +1,7 @@
 ﻿using Company;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Linq;
+using System.Xml.Linq;
 using Newtonsoft.Json.Linq;
 
 namespace CompanyTests
@@ -53,12 +53,19 @@ namespace CompanyTests
         public void GenerateXmlReport_should_return_all_properties_of_all_workers_as_Xml()
         {
             var company = CreateTestCompany();
-            var detailedReport = company.GenerateXmlReport();
-            var splitUpReport = detailedReport.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-            Assert.AreEqual(3, splitUpReport.Length);
-            Assert.AreEqual("Erna Solberg is working as Employee at our company. Erna Solberg works as CEO, and has a monthly salary of 100000", splitUpReport[0]);
-            Assert.AreEqual("Bjarne Håkon Hanssen is working as Consultant at our company. Bjarne Håkon Hanssen currently works for First House, for a monthy fee of 80000", splitUpReport[1]);
-            Assert.AreEqual("Siv Jensen is working as Employee at our company. Siv Jensen works as CFO, and has a monthly salary of 70000", splitUpReport[2]);
+            var xmlReport = company.GenerateXmlReport();
+
+            var xmlElement = XElement.Parse(xmlReport);
+            var workers = xmlElement.Elements("Worker").ToList();
+
+            var erna = workers.First(x => (string)x.Element("Name") == "Erna Solberg");
+            Assert.AreEqual(erna.Element("Position")?.Value, "CEO");
+
+            var bjarne = workers.First(x => (string)x.Element("Name") == "Bjarne Håkon Hanssen");
+            Assert.AreEqual(bjarne.Element("Company")?.Value, "First House");
+
+            var siv = workers.First(x => (string)x.Element("Name") == "Siv Jensen");
+            Assert.AreEqual(siv.Element("Position")?.Value, "CFO");
         }
 
         // Bruk Visitor-pattern.
