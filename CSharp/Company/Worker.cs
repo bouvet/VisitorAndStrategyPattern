@@ -1,25 +1,29 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Company
 {
     public abstract class Worker
     {
-        public Worker(string name)
+        public Worker(string name, string workerType)
         {
             Name = name;
+            WorkerType = workerType;
         }
 
-        public string Name { get; private set; }
-        public abstract string ReportPlainText { get; }
-        public abstract string ReportJson { get; }
+        public string Name { get; }
+
+        public string WorkerType { get; }
+
         public abstract decimal CalculateYearlyCost();
         public abstract decimal CalculateHourlyCost();
+        public abstract Dictionary<string, string> GetReportData();
     }
 
     public class Employee : Worker
     {
         public Employee(string name, string position, decimal monthlySalary, decimal parttimePercentage)
-            : base(name)
+            : base(name, "Employee")
         {
             Position = position;
             MonthySalary = monthlySalary;
@@ -29,21 +33,14 @@ namespace Company
         public string Position { get; private set; }
         public decimal MonthySalary { get; private set; }
         public decimal ParttimePercentage { get; private set; }
-
-        public override string ReportPlainText
+        public override Dictionary<string, string> GetReportData()
         {
-            get
-            {
-                return string.Format("Employee {0} works as {1} and earns {2} per month.", Name, Position, MonthySalary);
-            }
-        }
-
-        public override string ReportJson
-        {
-            get
-            {
-                return string.Format(@"{{ ""workerType"": ""Employee"", ""name"": ""{0}"", ""position"": ""{1}"", ""monthlySalary"": {2} }}", Name, Position, MonthySalary);
-            }
+            var reportData = new Dictionary<string, string>();
+            reportData.Add("Name", Name);
+            reportData.Add("WorkerType", WorkerType);
+            reportData.Add("Position", Position);
+            reportData.Add("MonthlySalary", MonthySalary.ToString());
+            return reportData;
         }
 
         public override decimal CalculateYearlyCost()
@@ -61,7 +58,7 @@ namespace Company
     public class Consultant : Worker
     {
         public Consultant(string name, string company, decimal monthlyFee)
-            : base(name)
+            : base(name, "Consultant")
         {
             Company = company;
             MonthlyFee = monthlyFee;
@@ -70,20 +67,14 @@ namespace Company
         public string Company { get; private set; }
         public decimal MonthlyFee { get; private set; }
 
-        public override string ReportPlainText
+        public override Dictionary<string, string> GetReportData()
         {
-            get
-            {
-                return string.Format("Consultant {0} from {1} costs {2} per month.", Name, Company, MonthlyFee);
-            }
-        }
-
-        public override string ReportJson
-        {
-            get
-            {
-                return string.Format(@"{{ ""workerType"": ""Consultant"", ""name"": ""{0}"", ""company"": ""{1}"", ""monthlyFee"": {2} }}", Name, Company, MonthlyFee);
-            }
+            var reportData = new Dictionary<string, string>();
+            reportData.Add("Name", Name);
+            reportData.Add("WorkerType", WorkerType);
+            reportData.Add("Company", Company);
+            reportData.Add("MonthlyFee", MonthlyFee.ToString());
+            return reportData;
         }
 
         public override decimal CalculateYearlyCost()

@@ -18,35 +18,40 @@ namespace Company
             _workers.Add(worker);
         }
 
-        public string WorkerReportPlainText
+        public string GenerateJsonReport()
         {
-            get
+            StringBuilder reportBuilder = new StringBuilder("{ \"Workers\" : [");
+            foreach (var worker in _workers)
             {
-                StringBuilder builder = new StringBuilder();
-                foreach (var worker in _workers)
+                reportBuilder.AppendLine("{");
+                reportBuilder.AppendLine("\"Worker\": {");
+                foreach (var reportLine in worker.GetReportData())
                 {
-                    if (builder.Length > 0)
-                        builder.Append(Environment.NewLine);
-                    builder.Append(worker.ReportPlainText);
+                    reportBuilder.AppendLine($"\"{reportLine.Key}\":\"{reportLine.Value}\",");
                 }
-                return builder.ToString();
+                reportBuilder.RemoveLastComma();
+                reportBuilder.AppendLine("}},");
             }
+            reportBuilder.RemoveLastComma();
+            reportBuilder.AppendLine("]}");
+            return reportBuilder.ToString();
         }
 
-        public string WorkerReportJson
+        public string GenerateXmlReport()
         {
-            get
+            StringBuilder reportBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            reportBuilder.AppendLine("<Workers>");
+            foreach (var worker in _workers)
             {
-                StringBuilder builder = new StringBuilder("[");
-                foreach (var worker in _workers)
+                reportBuilder.AppendLine("<Worker>");
+                foreach (var reportLine in worker.GetReportData())
                 {
-                    if (builder.Length > 1)
-                        builder.Append(",");
-                    builder.Append(worker.ReportJson);
+                    reportBuilder.AppendLine($"<{reportLine.Key}>{reportLine.Value}</{reportLine.Key}>");
                 }
-                builder.Append("]");
-                return builder.ToString();
+                reportBuilder.AppendLine("</Worker>");
             }
+            reportBuilder.AppendLine("</Workers>");
+            return reportBuilder.ToString();
         }
 
         public decimal CalculateYearlyCost()

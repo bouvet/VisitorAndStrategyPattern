@@ -1,11 +1,15 @@
 ﻿using Company;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+using System.Linq;
+using System.Xml.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace CompanyTests
 {
-    /* Den abstrakte klassen Worker har to implementasjoner, Employee og Consultant.
-     * Begge disse klassene implementerer metodene ReportPlainText, ReportJson, CalculateYearlyCost og CalculateHourlyCost.
+    /* Et Company har flere Workers, og ønsker å kunne generere ansatt-rapporter 
+     * i tillegg til å kunne beregne årlige kostnader og gjennomsnittlig timekost.
+     * Akkurat nå finnes det to rapporter, en XmlReport og en JsonReport
+     * Den abstrakte klassen Worker har to implementasjoner, Employee og Consultant.
      * Oppgaven går ut på å refaktorere slik at denne logikken flyttes ut av Worker og sub-klasser uten å bryte testene.
      * Bruk Strategy til å generere rapporter og Visitor til å beregne årlig kost og gjennomsnittlig timekost.
      * http://www.oodesign.com/visitor-pattern.html
@@ -26,29 +30,44 @@ namespace CompanyTests
 
         // Bruk strategy-pattern
         [TestMethod]
-        public void WorkerReportPlainText_should_return_information_on_all_workers_separated_by_lineBreak()
+        public void GenerateJsonReport_should_return_all_properties_of_all_workers_as_Json()
         {
             var company = CreateTestCompany();
-            var result = company.WorkerReportPlainText.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-            Assert.AreEqual(3, result.Length);
-            Assert.AreEqual("Employee Erna Solberg works as CEO and earns 100000 per month.", result[0]);
-            Assert.AreEqual("Consultant Bjarne Håkon Hanssen from First House costs 80000 per month.", result[1]);
-            Assert.AreEqual("Employee Siv Jensen works as CFO and earns 70000 per month.", result[2]);
+            var jsonReport = company.GenerateJsonReport();
+
+            // Using Newtonsoft.Json to parse generated json
+            var jsonObject = JObject.Parse(jsonReport);
+
+            var workers = jsonObject["Workers"].Select(w => w["Worker"]).ToList();
+
+            var erna = workers.First(w => w["Name"].ToString() == "Erna Solberg");
+            Assert.AreEqual(erna["Position"], "CEO");
+
+            var bjarne = workers.First(w => w["Name"].ToString() == "Bjarne Håkon Hanssen");
+            Assert.AreEqual(bjarne["Company"], "First House");
+
+            var siv = workers.First(w => w["Name"].ToString() == "Siv Jensen");
+            Assert.AreEqual(siv["Position"], "CFO");
         }
 
         // Bruk strategy-pattern
         [TestMethod]
-        public void WorkerReportJson_should_return_information_on_all_workers_by_json()
+        public void GenerateXmlReport_should_return_all_properties_of_all_workers_as_Xml()
         {
             var company = CreateTestCompany();
-            var result = company.WorkerReportJson;
-            var expected = "[" +
-                @"{ ""workerType"": ""Employee"", ""name"": ""Erna Solberg"", ""position"": ""CEO"", ""monthlySalary"": 100000 }," +
-                @"{ ""workerType"": ""Consultant"", ""name"": ""Bjarne Håkon Hanssen"", ""company"": ""First House"", ""monthlyFee"": 80000 }," +
-                @"{ ""workerType"": ""Employee"", ""name"": ""Siv Jensen"", ""position"": ""CFO"", ""monthlySalary"": 70000 }" +
-                "]";
+            var xmlReport = company.GenerateXmlReport();
 
-            Assert.AreEqual(expected, result);
+            var xmlElement = XElement.Parse(xmlReport);
+            var workers = xmlElement.Elements("Worker").ToList();
+
+            var erna = workers.First(x => (string)x.Element("Name") == "Erna Solberg");
+            Assert.AreEqual(erna.Element("Position")?.Value, "CEO");
+
+            var bjarne = workers.First(x => (string)x.Element("Name") == "Bjarne Håkon Hanssen");
+            Assert.AreEqual(bjarne.Element("Company")?.Value, "First House");
+
+            var siv = workers.First(x => (string)x.Element("Name") == "Siv Jensen");
+            Assert.AreEqual(siv.Element("Position")?.Value, "CFO");
         }
 
         // Bruk Visitor-pattern.
