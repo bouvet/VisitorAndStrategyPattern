@@ -1,6 +1,8 @@
 ﻿using Company;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace CompanyTests
 {
@@ -29,12 +31,21 @@ namespace CompanyTests
         public void GenerateJsonReport_should_return_all_properties_of_all_workers_as_Json()
         {
             var company = CreateTestCompany();
-            var shortReport = company.GenerateJsonReport();
-            var splitUpReport = shortReport.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-            Assert.AreEqual(3, splitUpReport.Length);
-            Assert.AreEqual("Erna Solberg is working as Employee at our company.", splitUpReport[0]);
-            Assert.AreEqual("Bjarne Håkon Hanssen is working as Consultant at our company.", splitUpReport[1]);
-            Assert.AreEqual("Siv Jensen is working as Employee at our company.", splitUpReport[2]);
+            var jsonReport = company.GenerateJsonReport();
+
+            // Using Newtonsoft.Json to parse generated json
+            var jsonObject = JObject.Parse(jsonReport);
+
+            var workers = jsonObject["Workers"].Select(w => w["Worker"]).ToList();
+
+            var erna = workers.First(w => w["Name"].ToString() == "Erna Solberg");
+            Assert.AreEqual(erna["Position"], "CEO");
+
+            var bjarne = workers.First(w => w["Name"].ToString() == "Bjarne Håkon Hanssen");
+            Assert.AreEqual(bjarne["Company"], "First House");
+
+            var siv = workers.First(w => w["Name"].ToString() == "Siv Jensen");
+            Assert.AreEqual(siv["Position"], "CFO");
         }
 
         // Bruk strategy-pattern

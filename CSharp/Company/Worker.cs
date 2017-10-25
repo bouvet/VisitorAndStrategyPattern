@@ -25,7 +25,8 @@ namespace Company
 
         public virtual string Report()
         {
-            return _reportStrategy.GenerateReport(GetReportData());
+            var workerReportData = GetReportData();
+            return _reportStrategy.GenerateWorkerReport(workerReportData);
         }
 
         public abstract Dictionary<string, string> GetReportData();
