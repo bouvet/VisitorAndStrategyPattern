@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Company
 {
@@ -42,5 +43,37 @@ namespace Company
         }
 
         public decimal HourlyCost { get { return _hourlyCost; } }
+    }
+
+    public class ReportVisitor : IWorkerVisitor
+    {
+        private readonly IReportStrategy _reportStrategy;
+
+        public ReportVisitor(IReportStrategy reportStrategy)
+        {
+            _reportStrategy = reportStrategy;
+        }
+
+        public string Report { get; private set; }
+
+        public void Visit(Employee employee)
+        {
+            var reportData = new Dictionary<string, string>();
+            reportData.Add("Name", employee.Name);
+            reportData.Add("WorkerType",  employee.WorkerType);
+            reportData.Add("Position", employee.Position);
+            reportData.Add("MonthlySalary", employee.MonthySalary.ToString());
+            Report = _reportStrategy.GenerateWorkerReport(reportData);
+        }
+
+        public void Visit(Consultant consultant)
+        {
+            var reportData = new Dictionary<string, string>();
+            reportData.Add("Name", consultant.Name);
+            reportData.Add("WorkerType", consultant.WorkerType);
+            reportData.Add("Company", consultant.Company);
+            reportData.Add("MonthlyFee", consultant.MonthlyFee.ToString());
+            Report = _reportStrategy.GenerateWorkerReport(reportData);
+        }
     }
 }

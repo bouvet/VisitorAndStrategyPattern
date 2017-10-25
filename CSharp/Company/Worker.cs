@@ -5,31 +5,15 @@ namespace Company
 {
     public abstract class Worker
     {
-        private IReportStrategy _reportStrategy;
-
         protected Worker(string name, string workerType)
         {
             Name = name;
             WorkerType = workerType;
-            _reportStrategy = new XmlReport();  // Default rapporttype
         }
 
         public string Name { get; }
 
         public string WorkerType { get; }
-
-        public void SetReportStrategy(IReportStrategy reportStrategy)
-        {
-            _reportStrategy = reportStrategy;
-        }
-
-        public virtual string Report()
-        {
-            var workerReportData = GetReportData();
-            return _reportStrategy.GenerateWorkerReport(workerReportData);
-        }
-
-        public abstract Dictionary<string, string> GetReportData();
 
         public abstract void Accept(IWorkerVisitor visitor);
     }
@@ -47,16 +31,6 @@ namespace Company
         public string Position { get; private set; }
         public decimal MonthySalary { get; private set; }
         public decimal ParttimePercentage { get; private set; }
-
-        public override Dictionary<string, string> GetReportData()
-        {
-            var reportData = new Dictionary<string, string>();
-            reportData.Add("Name", Name);
-            reportData.Add("WorkerType", WorkerType);
-            reportData.Add("Position", Position);
-            reportData.Add("MonthlySalary", MonthySalary.ToString());
-            return reportData;
-        }
 
         public override void Accept(IWorkerVisitor visitor)
         {
@@ -76,16 +50,6 @@ namespace Company
 
         public string Company { get; private set; }
         public decimal MonthlyFee { get; private set; }
-        public override Dictionary<string, string> GetReportData()
-        {
-            var reportData = new Dictionary<string, string>();
-            reportData.Add("Name", Name);
-            reportData.Add("WorkerType", WorkerType);
-            reportData.Add("Company", Company);
-            reportData.Add("MonthlyFee", MonthlyFee.ToString());
-            return reportData;
-        }
-
         public override void Accept(IWorkerVisitor visitor)
         {
             visitor.Visit(this);
