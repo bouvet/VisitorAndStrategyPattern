@@ -1,50 +1,64 @@
-﻿namespace Company
+﻿using System;
+using System.Collections.Generic;
+
+namespace Company
 {
     public abstract class Worker
     {
-        public Worker(string name)
+        public Worker(string name, string workerType)
         {
             Name = name;
+            WorkerType = workerType;
         }
 
-        public string Name { get; private set; }
-        public abstract string ReportPlainText { get; }
-        public abstract string ReportJson { get; }
+        public string Name { get; }
+
+        public string WorkerType { get; }
+
+        public abstract decimal CalculateYearlyCost();
+        public abstract decimal CalculateHourlyCost();
+        public abstract Dictionary<string, string> GetReportData();
     }
 
     public class Employee : Worker
     {
-        public Employee(string name, string position, decimal monthlySalary)
-            : base(name)
+        public Employee(string name, string position, decimal monthlySalary, decimal parttimePercentage)
+            : base(name, "Employee")
         {
             Position = position;
             MonthySalary = monthlySalary;
+            ParttimePercentage = parttimePercentage;
         }
 
         public string Position { get; private set; }
         public decimal MonthySalary { get; private set; }
-
-        public override string ReportPlainText
+        public decimal ParttimePercentage { get; private set; }
+        public override Dictionary<string, string> GetReportData()
         {
-            get
-            {
-                return string.Format("Employee {0} works as {1} and earns {2} per month.", Name, Position, MonthySalary);
-            }
+            var reportData = new Dictionary<string, string>();
+            reportData.Add("Name", Name);
+            reportData.Add("WorkerType", WorkerType);
+            reportData.Add("Position", Position);
+            reportData.Add("MonthlySalary", MonthySalary.ToString());
+            return reportData;
         }
 
-        public override string ReportJson
+        public override decimal CalculateYearlyCost()
         {
-            get
-            {
-                return string.Format(@"{{ ""workerType"": ""Employee"", ""name"": ""{0}"", ""position"": ""{1}"", ""monthlySalary"": {2} }}", Name, Position, MonthySalary);
-            }
+            return MonthySalary * 12;
+        }
+
+        public override decimal CalculateHourlyCost()
+        {
+            var hoursPerMonth = (decimal)37.5 * 4 * (ParttimePercentage / 100);
+            return Math.Round(MonthySalary / hoursPerMonth, 2);
         }
     }
 
     public class Consultant : Worker
     {
         public Consultant(string name, string company, decimal monthlyFee)
-            : base(name)
+            : base(name, "Consultant")
         {
             Company = company;
             MonthlyFee = monthlyFee;
@@ -53,21 +67,25 @@
         public string Company { get; private set; }
         public decimal MonthlyFee { get; private set; }
 
-        public override string ReportPlainText
+        public override Dictionary<string, string> GetReportData()
         {
-            get
-            {
-                return string.Format("Consultant {0} from {1} costs {2} per month.", Name, Company, MonthlyFee);
-            }
+            var reportData = new Dictionary<string, string>();
+            reportData.Add("Name", Name);
+            reportData.Add("WorkerType", WorkerType);
+            reportData.Add("Company", Company);
+            reportData.Add("MonthlyFee", MonthlyFee.ToString());
+            return reportData;
         }
 
-        public override string ReportJson
+        public override decimal CalculateYearlyCost()
         {
-            get
-            {
-                return string.Format(@"{{ ""workerType"": ""Consultant"", ""name"": ""{0}"", ""company"": ""{1}"", ""monthlyFee"": {2} }}", Name, Company, MonthlyFee);
-            }
+            return MonthlyFee * 12;
         }
 
+        public override decimal CalculateHourlyCost()
+        {
+            var hoursPerMonth = (decimal) (37.5 * 4);
+            return Math.Round(MonthlyFee / hoursPerMonth, 2);
+        }
     }
 }
