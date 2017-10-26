@@ -24,13 +24,12 @@ namespace Company
             foreach (var worker in _workers)
             {
                 reportBuilder.AppendLine("{");
-                reportBuilder.AppendLine("\"Worker\": {");
                 foreach (var reportLine in worker.GetReportData())
                 {
                     reportBuilder.AppendLine($"\"{reportLine.Key}\":\"{reportLine.Value}\",");
                 }
                 reportBuilder.RemoveLastComma();
-                reportBuilder.AppendLine("}},");
+                reportBuilder.AppendLine("},");
             }
             reportBuilder.RemoveLastComma();
             reportBuilder.AppendLine("]}");
