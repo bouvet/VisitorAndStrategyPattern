@@ -29,45 +29,43 @@ import org.w3c.dom.Document;
  */
 public class CompanyTest {
 
-    // Bruk strategy-pattern
-    @Test
-    public void generateJsonReport_should_return_all_properties_of_all_workers_as_Json()
-    {
-        Company company = createTestCompany();
-        String jsonReport = company.generateJsonReport();
+	// Bruk strategy-pattern
+	@Test
+	public void generateJsonReport_should_return_all_properties_of_all_workers_as_Json() {
+		Company company = createTestCompany();
+		String jsonReport = company.generateJsonReport();
 
-        JSONObject jsonObject = new JSONObject(jsonReport);
+		JSONObject jsonObject = new JSONObject(jsonReport);
 
-        JSONObject erna = findWorker(jsonObject, "Erna Solberg");
-        assertEquals("CEO", erna.getString("Position"));
+		JSONObject erna = findWorker(jsonObject, "Erna Solberg");
+		assertEquals("CEO", erna.getString("Position"));
 
-        JSONObject bjarne = findWorker(jsonObject, "Bjarne Håkon Hanssen");
-        assertEquals("First House", bjarne.getString("Company"));
+		JSONObject bjarne = findWorker(jsonObject, "Bjarne Håkon Hanssen");
+		assertEquals("First House", bjarne.getString("Company"));
 
-        JSONObject siv = findWorker(jsonObject, "Siv Jensen");
-        assertEquals("CFO", siv.getString("Position"));
-    }
-    
-    // Bruk strategy-pattern
-    @Test
-    public void generateXmlReport_should_return_all_properties_of_all_workers_as_Xml() throws Exception
-    {
-        Company company = createTestCompany();
-        String xmlReport = company.generateXmlReport();
+		JSONObject siv = findWorker(jsonObject, "Siv Jensen");
+		assertEquals("CFO", siv.getString("Position"));
+	}
 
-    	XPath xpath = XPathFactory.newInstance().newXPath();
-    	DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-    	Document document = dBuilder.parse(new ByteArrayInputStream(xmlReport.getBytes(StandardCharsets.UTF_8.name())));
-   	
-    	String ernaPosition = xpath.compile("/Workers/Worker[Name='Erna Solberg']/Position").evaluate(document);
-        assertEquals("CEO", ernaPosition);
+	// Bruk strategy-pattern
+	@Test
+	public void generateXmlReport_should_return_all_properties_of_all_workers_as_Xml() throws Exception {
+		Company company = createTestCompany();
+		String xmlReport = company.generateXmlReport();
 
-    	String bjarneCompany = xpath.compile("/Workers/Worker[Name='Bjarne Håkon Hanssen']/Company").evaluate(document);
-        assertEquals("First House", bjarneCompany);
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+		Document document = dBuilder.parse(new ByteArrayInputStream(xmlReport.getBytes(StandardCharsets.UTF_8.name())));
 
-        String sivPosition = xpath.compile("/Workers/Worker[Name='Siv Jensen']/Position").evaluate(document);
-        assertEquals("CFO", sivPosition);
-    }
+		String ernaPosition = xpath.compile("/Workers/Worker[Name='Erna Solberg']/Position").evaluate(document);
+		assertEquals("CEO", ernaPosition);
+
+		String bjarneCompany = xpath.compile("/Workers/Worker[Name='Bjarne Håkon Hanssen']/Company").evaluate(document);
+		assertEquals("First House", bjarneCompany);
+
+		String sivPosition = xpath.compile("/Workers/Worker[Name='Siv Jensen']/Position").evaluate(document);
+		assertEquals("CFO", sivPosition);
+	}
 
 	// Bruk Visitor-pattern
 	@Test
@@ -92,16 +90,16 @@ public class CompanyTest {
 		company.addWorker(new Employee("Siv Jensen", "CFO", 70000, 80));
 		return company;
 	}
-	
-	private static JSONObject findWorker(JSONObject report, String name) {
-        JSONArray workers = report.getJSONArray("Workers");
 
-        for (int i = 0; i < workers.length(); i++) {
-        	JSONObject worker = workers.getJSONObject(i);
-        	if (name.equals(worker.getString("Name"))) {
-        		return worker;
-        	}
-        }
+	private static JSONObject findWorker(JSONObject report, String name) {
+		JSONArray workers = report.getJSONArray("Workers");
+
+		for (int i = 0; i < workers.length(); i++) {
+			JSONObject worker = workers.getJSONObject(i);
+			if (name.equals(worker.getString("Name"))) {
+				return worker;
+			}
+		}
 		return null;
 	}
 }

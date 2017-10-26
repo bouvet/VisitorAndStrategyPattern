@@ -7,18 +7,15 @@ import java.util.Map;
 public class Company {
 	private List<Worker> workers;
 
-	public Company()
-	{
+	public Company() {
 		workers = new ArrayList<Worker>();
 	}
 
-	public void addWorker(Worker worker)
-	{
+	public void addWorker(Worker worker) {
 		workers.add(worker);
 	}
 
-	public String generateJsonReport()
-	{
+	public String generateJsonReport() {
 		StringBuilder reportBuilder = new StringBuilder("{ \"Workers\" : [");
 		for (Worker worker : workers) {
 			reportBuilder.append("{\n");
@@ -33,8 +30,7 @@ public class Company {
 		return reportBuilder.toString();
 	}
 
-	public String generateXmlReport()
-	{
+	public String generateXmlReport() {
 		StringBuilder reportBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		reportBuilder.append("<Workers>\n");
 		for (Worker worker : workers) {
@@ -57,8 +53,7 @@ public class Company {
 		return yearlyCost;
 	}
 
-	public double calculateAverageHourlyCost()
-	{
+	public double calculateAverageHourlyCost() {
 		if (workers.size() == 0)
 			return 0.0;
 
