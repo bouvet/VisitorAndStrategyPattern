@@ -5,7 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 public class Company {
+	
+	public static final String XML_FORMAT = "xml";
+	public static final String JSON_FORMAT = "json";
+	
 	private List<Worker> workers;
+	
+	private String reportFormat;
 
 	public Company() {
 		workers = new ArrayList<Worker>();
@@ -14,8 +20,20 @@ public class Company {
 	public void addWorker(Worker worker) {
 		workers.add(worker);
 	}
+	
+	public void setReportFormat(String reportFormat) {
+		this.reportFormat = reportFormat;
+	}
+	
+	public String generateReport() {
+		if (JSON_FORMAT.equals(reportFormat)) {
+			return generateJsonReport();
+		} else {
+			return generateXmlReport();
+		}
+	}
 
-	public String generateJsonReport() {
+	private String generateJsonReport() {
 		StringBuilder reportBuilder = new StringBuilder("{ \"Workers\" : [");
 		for (Worker worker : workers) {
 			reportBuilder.append("{\n");
@@ -30,7 +48,7 @@ public class Company {
 		return reportBuilder.toString();
 	}
 
-	public String generateXmlReport() {
+	private String generateXmlReport() {
 		StringBuilder reportBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		reportBuilder.append("<Workers>\n");
 		for (Worker worker : workers) {

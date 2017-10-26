@@ -33,7 +33,8 @@ public class CompanyTest {
 	@Test
 	public void generateJsonReport_should_return_all_properties_of_all_workers_as_Json() {
 		Company company = createTestCompany();
-		String jsonReport = company.generateJsonReport();
+		company.setReportFormat(Company.JSON_FORMAT);
+		String jsonReport = company.generateReport();
 
 		JSONObject jsonObject = new JSONObject(jsonReport);
 
@@ -51,7 +52,8 @@ public class CompanyTest {
 	@Test
 	public void generateXmlReport_should_return_all_properties_of_all_workers_as_Xml() throws Exception {
 		Company company = createTestCompany();
-		String xmlReport = company.generateXmlReport();
+		company.setReportFormat(Company.XML_FORMAT);
+		String xmlReport = company.generateReport();
 
 		XPath xpath = XPathFactory.newInstance().newXPath();
 		DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
