@@ -38,7 +38,8 @@ namespace Company
 
         public string GenerateXmlReport()
         {
-            StringBuilder reportBuilder = new StringBuilder();
+            StringBuilder reportBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            reportBuilder.AppendLine("<Workers>");
 
             // Strategy pattern: Vi endrer oppførsel, slik at visitor vil generere en Xml-rapport
             var reportVisitor = new ReportVisitor(new XmlReport());
@@ -48,6 +49,8 @@ namespace Company
                 worker.Accept(reportVisitor);
                 reportBuilder.AppendLine(reportVisitor.Report);
             }
+
+            reportBuilder.AppendLine("</Workers>");
             return reportBuilder.ToString();
         }
 
