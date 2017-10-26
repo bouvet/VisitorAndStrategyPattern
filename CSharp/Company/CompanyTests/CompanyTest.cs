@@ -37,7 +37,7 @@ namespace CompanyTests
             // Using Newtonsoft.Json to parse generated json
             var jsonObject = JObject.Parse(jsonReport);
 
-            var workers = jsonObject["Workers"].Select(w => w["Worker"]).ToList();
+            var workers = jsonObject["Workers"].Children().ToList();
 
             var erna = workers.First(w => w["Name"].ToString() == "Erna Solberg");
             Assert.AreEqual(erna["Position"], "CEO");

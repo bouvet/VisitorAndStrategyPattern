@@ -27,13 +27,12 @@ namespace Company
         public string GenerateWorkerReport(Dictionary<string, string> reportData)
         {
             var reportBuilder = new StringBuilder("{");
-            reportBuilder.AppendLine("\"Worker\": {");
             foreach(var reportLine in reportData)
             {
                 reportBuilder.AppendLine($"\"{reportLine.Key}\":\"{reportLine.Value}\",");
             }
             reportBuilder.RemoveLastComma();
-            reportBuilder.AppendLine("}},");
+            reportBuilder.AppendLine("},");
             return reportBuilder.ToString();
         }
     }
