@@ -75,5 +75,15 @@ namespace Company
             reportData.Add("MonthlyFee", consultant.MonthlyFee.ToString());
             Report = _reportStrategy.GenerateWorkerReport(reportData);
         }
+
+        public string GenerateReportHeader()
+        {
+            return _reportStrategy.GenerateReportHeader();
+        }
+
+        public string GenerateReportFooter()
+        {
+            return _reportStrategy.GenerateReportFooter();
+        }
     }
 }

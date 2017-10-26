@@ -6,6 +6,8 @@ namespace Company
     public interface IReportStrategy
     {
         string GenerateWorkerReport(Dictionary<string, string> reportData);
+        string GenerateReportHeader();
+        string GenerateReportFooter();
     }
 
     public class XmlReport : IReportStrategy
@@ -19,6 +21,18 @@ namespace Company
             }
             reportBuilder.AppendLine("</Worker>");
             return reportBuilder.ToString();
+        }
+
+        public string GenerateReportHeader()
+        {
+            var reportBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            reportBuilder.AppendLine("<Workers>");
+            return reportBuilder.ToString();
+        }
+
+        public string GenerateReportFooter()
+        {
+            return"</Workers>";
         }
     }
 
@@ -34,6 +48,16 @@ namespace Company
             reportBuilder.RemoveLastComma();
             reportBuilder.AppendLine("},");
             return reportBuilder.ToString();
+        }
+
+        public string GenerateReportHeader()
+        {
+            return "{ \"Workers\" : [";
+        }
+
+        public string GenerateReportFooter()
+        {
+            return "]}";
         }
     }
 }
