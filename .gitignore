@@ -45,3 +45,10 @@ _ReSharper*/
 
 # Office Temp Files
 ~$*
+
+# Eclipse files
+.settings/
+.classpath
+.project
+target/
+
