@@ -39,12 +39,10 @@ namespace Company
             reportBuilder.AppendLine("<Workers>");
             foreach (var worker in _workers)
             {
-                reportBuilder.AppendLine("<Worker>");
-                foreach (var reportLine in worker.GetReportData())
-                {
-                    reportBuilder.AppendLine($"<{reportLine.Key}>{reportLine.Value}</{reportLine.Key}>");
-                }
-                reportBuilder.AppendLine("</Worker>");
+                // Strategy pattern: Vi endrer oppførsel, slik at worker.Report() vil generere en Xml-rapport
+                worker.SetReportStrategy(new XmlReport());
+                var xmlReport = worker.Report();
+                reportBuilder.AppendLine(xmlReport);
             }
             reportBuilder.AppendLine("</Workers>");
             return reportBuilder.ToString();
