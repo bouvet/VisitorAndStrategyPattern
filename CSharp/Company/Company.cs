@@ -35,14 +35,18 @@ namespace Company
 
         public string GenerateXmlReport()
         {
-            StringBuilder reportBuilder = new StringBuilder();
+            StringBuilder reportBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            reportBuilder.AppendLine("<Workers>");
             foreach (var worker in _workers)
             {
-                // Strategy pattern: Vi endrer oppførsel, slik at worker.Report() vil generere en Xml-rapport
-                worker.SetReportStrategy(new XmlReport());
-                var xmlReport = worker.Report();
-                reportBuilder.AppendLine(xmlReport);
+                reportBuilder.AppendLine("<Worker>");
+                foreach (var reportLine in worker.GetReportData())
+                {
+                    reportBuilder.AppendLine($"<{reportLine.Key}>{reportLine.Value}</{reportLine.Key}>");
+                }
+                reportBuilder.AppendLine("</Worker>");
             }
+            reportBuilder.AppendLine("</Workers>");
             return reportBuilder.ToString();
         }
 
