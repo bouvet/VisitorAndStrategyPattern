@@ -2,7 +2,6 @@ package no.bouvet.vasp;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Company {
 	
@@ -11,7 +10,7 @@ public class Company {
 	
 	private List<Worker> workers;
 	
-	private String reportFormat;
+	private ReportStrategy reportStrategy;
 
 	public Company() {
 		workers = new ArrayList<Worker>();
@@ -22,45 +21,15 @@ public class Company {
 	}
 	
 	public void setReportFormat(String reportFormat) {
-		this.reportFormat = reportFormat;
+		if (JSON_FORMAT.equals(reportFormat)) {
+			reportStrategy = new JsonReport();
+		} else {
+			reportStrategy = new XmlReport();
+		}
 	}
 	
 	public String generateReport() {
-		if (JSON_FORMAT.equals(reportFormat)) {
-			return generateJsonReport();
-		} else {
-			return generateXmlReport();
-		}
-	}
-
-	private String generateJsonReport() {
-		StringBuilder reportBuilder = new StringBuilder("{ \"Workers\" : [");
-		for (Worker worker : workers) {
-			reportBuilder.append("{\n");
-			for (Map.Entry<String, String> reportLine : worker.getReportData().entrySet()) {
-				reportBuilder.append(String.format("\"%s\":\"%s\",\n", reportLine.getKey(), reportLine.getValue()));
-			}
-			reportBuilder.deleteCharAt(reportBuilder.length() - 2);
-			reportBuilder.append("},\n");
-		}
-		reportBuilder.deleteCharAt(reportBuilder.length() - 2);
-		reportBuilder.append("]}\n");
-		return reportBuilder.toString();
-	}
-
-	private String generateXmlReport() {
-		StringBuilder reportBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-		reportBuilder.append("<Workers>\n");
-		for (Worker worker : workers) {
-			reportBuilder.append("<Worker>\n");
-			for (Map.Entry<String, String> reportLine : worker.getReportData().entrySet()) {
-				reportBuilder
-						.append(String.format("<%s>%s</%s>\n", reportLine.getKey(), reportLine.getValue(), reportLine.getKey()));
-			}
-			reportBuilder.append("</Worker>\n");
-		}
-		reportBuilder.append("</Workers>\n");
-		return reportBuilder.toString();
+		return reportStrategy.generateReport(workers);
 	}
 
 	public double calculateYearlyCost() {
