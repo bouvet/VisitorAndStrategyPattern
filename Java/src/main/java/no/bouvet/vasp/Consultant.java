@@ -24,17 +24,23 @@ public class Consultant extends Worker {
 
 	@Override
 	public double calculateYearlyCost() {
+		// TODO: Bør flyttes ut v.h.a. Visitor-pattern
+
 		return monthlyFee * 12;
 	}
 
 	@Override
 	public double calculateHourlyCost() {
+		// TODO: Bør flyttes ut v.h.a. Visitor-pattern
+		
 		Double hoursPerMonth = 37.5 * 4;
 		return Math.round(100 * monthlyFee / hoursPerMonth) / 100.0;
 	}
 
 	@Override
 	public Map<String, String> getReportData() {
+		// TODO: Kan evt. flyttes ut v.h.a. en kombinasjon av Strategy- og Visitor-pattern
+
 		Map<String, String> reportData = new HashMap<>();
 		
 		reportData.put("Name", getName());

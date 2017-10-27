@@ -38,6 +38,8 @@ public class Company {
 	}
 
 	private String generateJsonReport() {
+		// TODO: Logikken bør flyttes ut v.h.a. Strategy-pattern
+
 		StringBuilder reportBuilder = new StringBuilder();
 		List<String> workerReports = workers.stream()
 				.map(Company::generateWorkerJsonReport)
@@ -51,6 +53,8 @@ public class Company {
 	}
 	
 	private static String generateWorkerJsonReport(Worker worker) {
+		// TODO: Logikken bør flyttes ut v.h.a. Strategy-pattern
+
 		StringBuilder reportBuilder = new StringBuilder();
 		Map<String, String> reportData = worker.getReportData();
 		
@@ -64,6 +68,8 @@ public class Company {
 	}
 
 	private String generateXmlReport() {
+		// TODO: Logikken bør flyttes ut v.h.a. Strategy-pattern
+
 		StringBuilder reportBuilder = new StringBuilder();
 		List<String> workerReports = workers.stream()
 				.map(Company::generateWorkerXmlReport)
@@ -78,6 +84,8 @@ public class Company {
 	}
 	
 	private static String generateWorkerXmlReport(Worker worker) {
+		// TODO: Logikken bør flyttes ut v.h.a. Strategy-pattern
+
 		StringBuilder reportBuilder = new StringBuilder();
 		Map<String, String> reportData = worker.getReportData();
 
@@ -91,6 +99,8 @@ public class Company {
 	}
 
 	public double calculateYearlyCost() {
+		// TODO: Logikken bør flyttes ut v.h.a. Visitor-pattern
+
 		double yearlyCost = 0.0;
 		for (Worker worker : workers) {
 			yearlyCost += worker.calculateYearlyCost();
@@ -99,6 +109,8 @@ public class Company {
 	}
 
 	public double calculateAverageHourlyCost() {
+		// TODO: Logikken bør flyttes ut v.h.a. Visitor-pattern
+		
 		if (workers.size() == 0)
 			return 0.0;
 
