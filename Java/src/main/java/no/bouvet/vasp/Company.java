@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Joiner;
+
 public class Company {
 	
 	public static final String XML_FORMAT = "xml";
@@ -34,32 +36,36 @@ public class Company {
 	}
 
 	private String generateJsonReport() {
-		StringBuilder reportBuilder = new StringBuilder("{ \"Workers\" : [");
+		StringBuilder reportBuilder = new StringBuilder("{\"Workers\": [");
+		List<String> workerElements = new ArrayList<String>();
 		for (Worker worker : workers) {
-			reportBuilder.append("{\n");
+			StringBuilder workerBuilder = new StringBuilder("{");
+			List<String> reportLines = new ArrayList<String>();
 			for (Map.Entry<String, String> reportLine : worker.getReportData().entrySet()) {
-				reportBuilder.append(String.format("\"%s\":\"%s\",\n", reportLine.getKey(), reportLine.getValue()));
+				reportLines.add(String.format("\"%s\": \"%s\"", reportLine.getKey(), reportLine.getValue()));
 			}
-			reportBuilder.deleteCharAt(reportBuilder.length() - 2);
-			reportBuilder.append("},\n");
+			workerBuilder.append(Joiner.on(", ").join(reportLines));
+			workerBuilder.append("}");
+			workerElements.add(workerBuilder.toString());
 		}
-		reportBuilder.deleteCharAt(reportBuilder.length() - 2);
-		reportBuilder.append("]}\n");
+		reportBuilder.append(Joiner.on(", ").join(workerElements));
+		reportBuilder.append("]}");
+		System.out.println(reportBuilder.toString());
 		return reportBuilder.toString();
 	}
 
 	private String generateXmlReport() {
-		StringBuilder reportBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-		reportBuilder.append("<Workers>\n");
+		StringBuilder reportBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+		reportBuilder.append("<Workers>");
 		for (Worker worker : workers) {
-			reportBuilder.append("<Worker>\n");
+			reportBuilder.append("<Worker>");
 			for (Map.Entry<String, String> reportLine : worker.getReportData().entrySet()) {
-				reportBuilder
-						.append(String.format("<%s>%s</%s>\n", reportLine.getKey(), reportLine.getValue(), reportLine.getKey()));
+				reportBuilder.append(String.format("<%s>%s</%s>", reportLine.getKey(), reportLine.getValue(), reportLine.getKey()));
 			}
-			reportBuilder.append("</Worker>\n");
+			reportBuilder.append("</Worker>");
 		}
-		reportBuilder.append("</Workers>\n");
+		reportBuilder.append("</Workers>");
+		System.out.println(reportBuilder.toString());
 		return reportBuilder.toString();
 	}
 
