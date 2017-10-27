@@ -52,7 +52,7 @@ namespace Company
             {
                 worker.Accept(visitor);
             }
-            return Math.Round(visitor.HourlyCost / 3, 2);
+            return Math.Round(visitor.HourlyCost / _workers.Count, 2);
         }
 
         private string GenerateReport(ReportVisitor reportVisitor)
