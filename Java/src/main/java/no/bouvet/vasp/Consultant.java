@@ -35,11 +35,13 @@ public class Consultant extends Worker {
 
 	@Override
 	public Map<String, String> getReportData() {
-		Map<String, String> reportData = new HashMap<String, String>();
+		Map<String, String> reportData = new HashMap<>();
+		
 		reportData.put("Name", getName());
 		reportData.put("WorkerType", getWorkerType());
 		reportData.put("Company", company);
 		reportData.put("MonthlyFee", String.valueOf(monthlyFee));
+		
 		return reportData;
 	}
 }
