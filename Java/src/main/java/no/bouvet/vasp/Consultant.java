@@ -23,17 +23,6 @@ public class Consultant extends Worker {
 	}
 
 	@Override
-	public double calculateYearlyCost() {
-		return monthlyFee * 12;
-	}
-
-	@Override
-	public double calculateHourlyCost() {
-		Double hoursPerMonth = 37.5 * 4;
-		return Math.round(100 * monthlyFee / hoursPerMonth) / 100.0;
-	}
-
-	@Override
 	public Map<String, String> getReportData() {
 		Map<String, String> reportData = new HashMap<String, String>();
 		reportData.put("Name", getName());
@@ -41,5 +30,10 @@ public class Consultant extends Worker {
 		reportData.put("Company", company);
 		reportData.put("MonthlyFee", String.valueOf(monthlyFee));
 		return reportData;
+	}
+
+	@Override
+	public void accept(WorkerVisitor visitor) {
+		visitor.visit(this);
 	}
 }

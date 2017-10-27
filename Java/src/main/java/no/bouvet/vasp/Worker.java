@@ -18,10 +18,8 @@ public abstract class Worker {
 	public String getWorkerType() {
 		return workerType;
 	}
-
-	public abstract double calculateYearlyCost();
-
-	public abstract double calculateHourlyCost();
+	
+	public abstract void accept(WorkerVisitor visitor);
 
 	public abstract Map<String, String> getReportData();
 }

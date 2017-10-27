@@ -33,22 +33,22 @@ public class Company {
 	}
 
 	public double calculateYearlyCost() {
-		double yearlyCost = 0.0;
+		YearlyCostVisitor visitor = new YearlyCostVisitor();
 		for (Worker worker : workers) {
-			yearlyCost += worker.calculateYearlyCost();
+			worker.accept(visitor);
 		}
-		return yearlyCost;
+		return visitor.getYearlyCost();
 	}
 
 	public double calculateAverageHourlyCost() {
 		if (workers.size() == 0)
 			return 0.0;
 
-		double sumHourlyCost = 0.0;
+		HourlyCostVisitor visitor = new HourlyCostVisitor();
 		for (Worker worker : workers) {
-			sumHourlyCost += worker.calculateHourlyCost();
+			worker.accept(visitor);
 		}
 
-		return Math.round(100 * sumHourlyCost / workers.size()) / 100.0;
+		return Math.round(100 * visitor.getHourlyCost() / workers.size()) / 100.0;
 	}
 }

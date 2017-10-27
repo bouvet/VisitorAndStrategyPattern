@@ -39,13 +39,7 @@ public class Employee extends Worker {
 	}
 
 	@Override
-	public double calculateYearlyCost() {
-		return monthlySalary * 12;
-	}
-
-	@Override
-	public double calculateHourlyCost() {
-		double hoursPerMonth = 37.5 * 4 * (parttimePercentage / 100);
-		return Math.round(100 * monthlySalary / hoursPerMonth) / 100.0;
+	public void accept(WorkerVisitor visitor) {
+		visitor.visit(this);
 	}
 }
