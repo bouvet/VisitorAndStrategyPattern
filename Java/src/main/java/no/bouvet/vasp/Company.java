@@ -1,5 +1,7 @@
 package no.bouvet.vasp;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,36 +38,55 @@ public class Company {
 	}
 
 	private String generateJsonReport() {
-		StringBuilder reportBuilder = new StringBuilder("{\"Workers\": [");
-		List<String> workerElements = new ArrayList<String>();
-		for (Worker worker : workers) {
-			StringBuilder workerBuilder = new StringBuilder("{");
-			List<String> reportLines = new ArrayList<String>();
-			for (Map.Entry<String, String> reportLine : worker.getReportData().entrySet()) {
-				reportLines.add(String.format("\"%s\": \"%s\"", reportLine.getKey(), reportLine.getValue()));
-			}
-			workerBuilder.append(Joiner.on(", ").join(reportLines));
-			workerBuilder.append("}");
-			workerElements.add(workerBuilder.toString());
-		}
-		reportBuilder.append(Joiner.on(", ").join(workerElements));
+		StringBuilder reportBuilder = new StringBuilder();
+		List<String> workerReports = workers.stream()
+				.map(Company::generateWorkerJsonReport)
+				.collect(toList());
+		
+		reportBuilder.append("{\"Workers\": [");
+		reportBuilder.append(Joiner.on(", ").join(workerReports));
 		reportBuilder.append("]}");
-		System.out.println(reportBuilder.toString());
+
+		return reportBuilder.toString();
+	}
+	
+	private static String generateWorkerJsonReport(Worker worker) {
+		StringBuilder reportBuilder = new StringBuilder();
+		Map<String, String> reportData = worker.getReportData();
+		
+		reportBuilder.append("{");
+		reportBuilder.append(Joiner.on(", ").join(reportData.entrySet().stream()
+				.map(reportLine -> String.format("\"%s\": \"%s\"", reportLine.getKey(), reportLine.getValue()))
+				.collect(toList())));
+		reportBuilder.append("}");
+
 		return reportBuilder.toString();
 	}
 
 	private String generateXmlReport() {
-		StringBuilder reportBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+		StringBuilder reportBuilder = new StringBuilder();
+		List<String> workerReports = workers.stream()
+				.map(Company::generateWorkerXmlReport)
+				.collect(toList());
+
+		reportBuilder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		reportBuilder.append("<Workers>");
-		for (Worker worker : workers) {
-			reportBuilder.append("<Worker>");
-			for (Map.Entry<String, String> reportLine : worker.getReportData().entrySet()) {
-				reportBuilder.append(String.format("<%s>%s</%s>", reportLine.getKey(), reportLine.getValue(), reportLine.getKey()));
-			}
-			reportBuilder.append("</Worker>");
-		}
+		workerReports.forEach(reportBuilder::append);
 		reportBuilder.append("</Workers>");
-		System.out.println(reportBuilder.toString());
+
+		return reportBuilder.toString();
+	}
+	
+	private static String generateWorkerXmlReport(Worker worker) {
+		StringBuilder reportBuilder = new StringBuilder();
+		Map<String, String> reportData = worker.getReportData();
+
+		reportBuilder.append("<Worker>");
+		reportData.entrySet().forEach(
+				reportLine -> reportBuilder.append(
+						String.format("<%s>%s</%s>", reportLine.getKey(), reportLine.getValue(), reportLine.getKey())));
+		reportBuilder.append("</Worker>");
+
 		return reportBuilder.toString();
 	}
 
