@@ -13,7 +13,7 @@ public class Company {
 	private ReportStrategy reportStrategy;
 
 	public Company() {
-		workers = new ArrayList<Worker>();
+		workers = new ArrayList<>();
 	}
 
 	public void addWorker(Worker worker) {
@@ -34,9 +34,7 @@ public class Company {
 
 	public double calculateYearlyCost() {
 		YearlyCostVisitor visitor = new YearlyCostVisitor();
-		for (Worker worker : workers) {
-			worker.accept(visitor);
-		}
+		workers.forEach(worker -> worker.accept(visitor));
 		return visitor.getYearlyCost();
 	}
 
@@ -45,9 +43,7 @@ public class Company {
 			return 0.0;
 
 		HourlyCostVisitor visitor = new HourlyCostVisitor();
-		for (Worker worker : workers) {
-			worker.accept(visitor);
-		}
+		workers.forEach(worker -> worker.accept(visitor));
 
 		return Math.round(100 * visitor.getHourlyCost() / workers.size()) / 100.0;
 	}

@@ -30,11 +30,13 @@ public class Employee extends Worker {
 
 	@Override
 	public Map<String, String> getReportData() {
-		Map<String, String> reportData = new HashMap<String, String>();
+		Map<String, String> reportData = new HashMap<>();
+		
 		reportData.put("Name", getName());
 		reportData.put("WorkerType", getWorkerType());
 		reportData.put("Position", position);
 		reportData.put("MonthlySalary", String.valueOf(monthlySalary));
+		
 		return reportData;
 	}
 
