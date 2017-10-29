@@ -33,9 +33,10 @@ namespace CompanyTests
         public void GenerateJsonReport_should_return_all_properties_of_all_workers_as_Json()
         {
             var company = CreateTestCompany();
+
+            // TODO: Erstatt format-spesifik rapportmetode ved å bruke Strategy pattern
             var jsonReport = company.GenerateJsonReport();
 
-            // Using Newtonsoft.Json to parse generated json
             var jsonObject = JObject.Parse(jsonReport);
 
             var workers = jsonObject["Workers"].Children().ToList();
@@ -55,6 +56,8 @@ namespace CompanyTests
         public void GenerateXmlReport_should_return_all_properties_of_all_workers_as_Xml()
         {
             var company = CreateTestCompany();
+
+            // TODO: Erstatt format-spesifik rapportmetode ved å bruke Strategy pattern
             var xmlReport = company.GenerateXmlReport();
 
             var xmlElement = XElement.Parse(xmlReport);
