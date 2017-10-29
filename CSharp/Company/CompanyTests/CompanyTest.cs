@@ -6,11 +6,11 @@ using Newtonsoft.Json.Linq;
 
 namespace CompanyTests
 {
-    /* Et Company har flere Workers, og ønsker å kunne generere flere ansatt-rapporter.
-     * Akkurat nå finnes det to rapporter, en XmlReport og en JsonReport
-     * Den abstrakte klassen Worker har to implementasjoner, Employee og Consultant.
+    /* Den abstrakte klassen Worker har to implementasjoner, Employee og Consultant.
+     * Begge disse klassene implementerer metodene ReportPlainText, ReportJson, CalculateYearlyCost og CalculateHourlyCost.
      * Oppgaven går ut på å refaktorere slik at denne logikken flyttes ut av Worker og sub-klasser uten å bryte testene.
-     * Dette kan gjøres vha Strategy-pattern.
+     * Bruk Strategy til å generere rapporter og Visitor til å beregne årlig kost og gjennomsnittlig timekost.
+     * http://www.oodesign.com/visitor-pattern.html
      * http://www.oodesign.com/strategy-pattern.html
      */
 
@@ -36,7 +36,7 @@ namespace CompanyTests
             // Using Newtonsoft.Json to parse generated json
             var jsonObject = JObject.Parse(jsonReport);
 
-            var workers = jsonObject["Workers"].Select(w => w["Worker"]).ToList();
+            var workers = jsonObject["Workers"].Children().ToList();
 
             var erna = workers.First(w => w["Name"].ToString() == "Erna Solberg");
             Assert.AreEqual(erna["Position"], "CEO");
