@@ -1,10 +1,7 @@
-# VisitorAndStrategyPattern
+# Visitor- og Strategy-pattern
 
-Den abstrakte klassen Worker har to implementasjoner, Employee og Consultant.
-Begge disse klassene implementerer metodene ReportPlainText og ReportJson.
-Oppgaven går ut på å refaktorere slik at denne logikken flyttes ut av Worker og sub-klasser uten å bryte testene i CompanyTests.
+I denne løsningen kombineres Visitor- og Strategy-pattern for å forbedre koden for rapportfunksjonalitet. En ny klasse **ReportVisitor** implementerer **WorkerVisitor** og den instansieres med ønsker strategi for rapportgenerering. På denne måten kan metoden **getReportData** fjernes fra **Worker** og subklasser. Dermed sitter vi igjen med helt "rene" domene-klasser. 
 
-Dette kan gjøres vha Visitor- og/eller Strategy-pattern.
-
+## Lenker
 * http://www.oodesign.com/visitor-pattern.html
 * http://www.oodesign.com/strategy-pattern.html
