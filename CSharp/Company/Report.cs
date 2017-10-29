@@ -5,12 +5,24 @@ namespace Company
 {
     public interface IReportStrategy
     {
-        string GenerateWorkerReport(Dictionary<string, string> reportData);
+        string GenerateReport(IList<Worker> workers);
     }
 
-    public class XmlReport : IReportStrategy
+    public class XmlReportStrategy : IReportStrategy
     {
-        public string GenerateWorkerReport(Dictionary<string, string> reportData)
+        public string GenerateReport(IList<Worker> workers)
+        {
+            StringBuilder reportBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            reportBuilder.AppendLine("<Workers>");
+            foreach (var worker in workers)
+            {
+                reportBuilder.AppendLine(GenerateWorkerReport(worker.GetReportData()));
+            }
+            reportBuilder.AppendLine("</Workers>");
+            return reportBuilder.ToString();
+        }
+
+        string GenerateWorkerReport(Dictionary<string, string> reportData)
         {
             var reportBuilder = new StringBuilder("<Worker>");
             foreach (var reportLine in reportData)
@@ -20,11 +32,23 @@ namespace Company
             reportBuilder.AppendLine("</Worker>");
             return reportBuilder.ToString();
         }
+
     }
 
-    public class JsonReport : IReportStrategy
+    public class JsonReportStrategy : IReportStrategy
     {
-        public string GenerateWorkerReport(Dictionary<string, string> reportData)
+        public string GenerateReport(IList<Worker> workers)
+        {
+            StringBuilder reportBuilder = new StringBuilder("{ \"Workers\" : [");
+            foreach (var worker in workers)
+            {
+                reportBuilder.Append(GenerateWorkerReport(worker.GetReportData()));
+            }
+            reportBuilder.AppendLine("]}");
+            return reportBuilder.ToString();
+        }
+
+        string GenerateWorkerReport(Dictionary<string, string> reportData)
         {
             var reportBuilder = new StringBuilder("{");
             foreach(var reportLine in reportData)

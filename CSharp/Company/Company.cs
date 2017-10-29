@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Company
 {
     public class Company
     {
         private readonly IList<Worker> _workers;
+        private IReportStrategy _reportStrategy;
 
         public Company()
         {
             _workers = new List<Worker>();
+            _reportStrategy = new XmlReportStrategy();  // Default strategy
         }
 
         public void AddWorker(Worker worker)
@@ -18,34 +19,14 @@ namespace Company
             _workers.Add(worker);
         }
 
-        public string GenerateJsonReport()
+        public void SetReportStrategy(IReportStrategy reportStrategy)
         {
-            StringBuilder reportBuilder = new StringBuilder("{ \"Workers\" : [");
-            foreach (var worker in _workers)
-            {
-                // Strategy pattern: Vi endrer oppførsel, slik at worker.Report() vil generere en Json-rapport
-                worker.SetReportStrategy(new JsonReport());
-                var jsonReport = worker.Report();
-                reportBuilder.AppendLine(jsonReport);
-            }
-            reportBuilder.RemoveLastComma();
-            reportBuilder.AppendLine("]}");
-            return reportBuilder.ToString();
+            _reportStrategy = reportStrategy;
         }
 
-        public string GenerateXmlReport()
+        public string GenerateReport()
         {
-            StringBuilder reportBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-            reportBuilder.AppendLine("<Workers>");
-            foreach (var worker in _workers)
-            {
-                // Strategy pattern: Vi endrer oppførsel, slik at worker.Report() vil generere en Xml-rapport
-                worker.SetReportStrategy(new XmlReport());
-                var xmlReport = worker.Report();
-                reportBuilder.AppendLine(xmlReport);
-            }
-            reportBuilder.AppendLine("</Workers>");
-            return reportBuilder.ToString();
+            return _reportStrategy.GenerateReport(_workers);
         }
 
         public decimal CalculateYearlyCost()

@@ -1,33 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Company
 {
     public abstract class Worker
     {
-        private IReportStrategy _reportStrategy;
-
         protected Worker(string name, string workerType)
         {
             Name = name;
             WorkerType = workerType;
-            _reportStrategy = new XmlReport();  // Default rapporttype
         }
 
         public string Name { get; }
 
         public string WorkerType { get; }
-
-        public void SetReportStrategy(IReportStrategy reportStrategy)
-        {
-            _reportStrategy = reportStrategy;
-        }
-
-        public virtual string Report()
-        {
-            var workerReportData = GetReportData();
-            return _reportStrategy.GenerateWorkerReport(workerReportData);
-        }
 
         public abstract Dictionary<string, string> GetReportData();
 
