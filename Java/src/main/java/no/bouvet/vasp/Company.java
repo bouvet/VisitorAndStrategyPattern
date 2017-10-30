@@ -10,13 +10,8 @@ import com.google.common.base.Joiner;
 
 public class Company {
 	
-	public static final String XML_FORMAT = "xml";
-	public static final String JSON_FORMAT = "json";
-	
 	private List<Worker> workers;
 	
-	private String reportFormat;
-
 	public Company() {
 		workers = new ArrayList<Worker>();
 	}
@@ -25,19 +20,7 @@ public class Company {
 		workers.add(worker);
 	}
 	
-	public void setReportFormat(String reportFormat) {
-		this.reportFormat = reportFormat;
-	}
-	
-	public String generateReport() {
-		if (JSON_FORMAT.equals(reportFormat)) {
-			return generateJsonReport();
-		} else {
-			return generateXmlReport();
-		}
-	}
-
-	private String generateJsonReport() {
+	public String generateJsonReport() {
 		// TODO: Logikken bør flyttes ut v.h.a. Strategy-pattern
 
 		StringBuilder reportBuilder = new StringBuilder();
@@ -67,7 +50,7 @@ public class Company {
 		return reportBuilder.toString();
 	}
 
-	private String generateXmlReport() {
+	public String generateXmlReport() {
 		// TODO: Logikken bør flyttes ut v.h.a. Strategy-pattern
 
 		StringBuilder reportBuilder = new StringBuilder();
