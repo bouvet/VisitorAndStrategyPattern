@@ -20,6 +20,7 @@ namespace Company
 
         public string GenerateJsonReport()
         {
+            // TODO: Logikken bør flyttes ut v.h.a. Strategy-pattern
             StringBuilder reportBuilder = new StringBuilder("{ \"Workers\" : [");
             foreach (var worker in _workers)
             {
@@ -38,6 +39,7 @@ namespace Company
 
         public string GenerateXmlReport()
         {
+            // TODO: Logikken bør flyttes ut v.h.a. Strategy-pattern
             StringBuilder reportBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
             reportBuilder.AppendLine("<Workers>");
             foreach (var worker in _workers)
