@@ -5,9 +5,6 @@ import java.util.List;
 
 public class Company {
 	
-	public static final String XML_FORMAT = "xml";
-	public static final String JSON_FORMAT = "json";
-	
 	private List<Worker> workers;
 	
 	private ReportStrategy reportStrategy;
@@ -20,12 +17,8 @@ public class Company {
 		workers.add(worker);
 	}
 	
-	public void setReportFormat(String reportFormat) {
-		if (JSON_FORMAT.equals(reportFormat)) {
-			reportStrategy = new JsonReport();
-		} else {
-			reportStrategy = new XmlReport();
-		}
+	public void setReportStrategy(ReportStrategy reportStrategy) {
+		this.reportStrategy = reportStrategy;
 	}
 	
 	public String generateReport() {
