@@ -57,6 +57,7 @@ namespace Company
 
         public decimal CalculateYearlyCost()
         {
+            // TODO: Logikken bør flyttes ut v.h.a. Visitor-pattern
             decimal yearlyCost = 0;
             foreach (var worker in _workers)
             {
@@ -67,6 +68,7 @@ namespace Company
 
         public decimal CalculateAverageHourlyCost()
         {
+            // TODO: Logikken bør flyttes ut v.h.a. Visitor-pattern
             if (_workers.Count == 0)
                 return 0;
 
