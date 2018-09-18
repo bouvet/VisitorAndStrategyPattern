@@ -2,52 +2,41 @@ package no.bouvet.vasp;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Company {
+    private List<Worker> workers;
+    private ReportStrategy reportStrategy;
 
-	private List<Worker> workers;
+    public Company() {
+        workers = new ArrayList<>();
+    }
 
-	private ReportStrategy reportStrategy;
+    public void addWorker(Worker worker) {
+        workers.add(worker);
+    }
 
-	public Company() {
-		workers = new ArrayList<>();
-	}
+    public void setReportStrategy(ReportStrategy reportStrategy) {
+        this.reportStrategy = reportStrategy;
+    }
 
-	public void addWorker(Worker worker) {
-		workers.add(worker);
-	}
+    public String generateReport() {
+        ReportVisitor visitor = new ReportVisitor(reportStrategy);
+        workers.forEach(worker -> worker.accept(visitor));
+        return visitor.getReport();
+    }
 
-	public void setReportStrategy(ReportStrategy reportStrategy) {
-		this.reportStrategy = reportStrategy;
-	}
+    public double calculateYearlyCost() {
+        YearlyCostVisitor visitor = new YearlyCostVisitor();
+        workers.forEach(worker -> worker.accept(visitor));
+        return visitor.getYearlyCost();
+    }
 
-	public String generateReport() {
-		ReportVisitor reportVisitor = new ReportVisitor(reportStrategy);
+    public double calculateAverageHourlyCost() {
+        if (workers.size() == 0)
+            return 0.0;
 
-		List<String> workerReports = workers.stream()
-				.map(worker -> {
-					worker.accept(reportVisitor);
-					return reportVisitor.getReport();
-				})
-				.collect(Collectors.toList());
-
-		return reportStrategy.assembleReport(workerReports);
-	}
-
-	public double calculateYearlyCost() {
-		YearlyCostVisitor visitor = new YearlyCostVisitor();
-		workers.forEach(worker -> worker.accept(visitor));
-		return visitor.getYearlyCost();
-	}
-
-	public double calculateAverageHourlyCost() {
-		if (workers.size() == 0)
-			return 0.0;
-
-		HourlyCostVisitor visitor = new HourlyCostVisitor();
-		workers.forEach(worker -> worker.accept(visitor));
-
-		return Math.round(100 * visitor.getHourlyCost() / workers.size()) / 100.0;
-	}
+        HourlyCostVisitor visitor = new HourlyCostVisitor();
+        workers.forEach(worker -> worker.accept(visitor));
+        return visitor.getAverageHourlyCost();
+    }
 }

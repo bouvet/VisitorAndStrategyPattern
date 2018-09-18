@@ -1,19 +1,21 @@
 package no.bouvet.vasp;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ReportVisitor implements WorkerVisitor {
 
 	private ReportStrategy reportStrategy;
-	private String report;
+	private List<String> workerReports = new ArrayList<>();
 
 	public ReportVisitor(ReportStrategy reportStrategy) {
 		this.reportStrategy = reportStrategy;
 	}
 
 	public String getReport() {
-		return report;
+		return reportStrategy.assembleReport(workerReports);
 	}
 
 	@Override
@@ -25,7 +27,7 @@ public class ReportVisitor implements WorkerVisitor {
 		reportData.put("Position", employee.getPosition());
 		reportData.put("MonthlySalary", String.valueOf(employee.getMonthlySalary()));
 
-		report = reportStrategy.generateWorkerReport(reportData);
+		workerReports.add(reportStrategy.generateWorkerReport(reportData));
 	}
 
 	@Override
@@ -37,6 +39,6 @@ public class ReportVisitor implements WorkerVisitor {
 		reportData.put("Company", consultant.getCompany());
 		reportData.put("MonthlyFee", String.valueOf(consultant.getMonthlyFee()));
 
-		report = reportStrategy.generateWorkerReport(reportData);
+		workerReports.add(reportStrategy.generateWorkerReport(reportData));
 	}
 }
