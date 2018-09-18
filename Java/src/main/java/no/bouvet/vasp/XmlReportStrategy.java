@@ -9,13 +9,13 @@ import java.util.Map;
  * Rapport-strategi som genererer en XML-rapport.
  *
  */
-public class XmlReport implements ReportStrategy {
+public class XmlReportStrategy implements ReportStrategy {
 
 	@Override
 	public String generateReport(List<Worker> workers) {
 		StringBuilder reportBuilder = new StringBuilder();
 		List<String> workerReports = workers.stream()
-				.map(XmlReport::generateWorkerReport)
+				.map(XmlReportStrategy::generateWorkerReport)
 				.collect(toList());
 
 		reportBuilder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");

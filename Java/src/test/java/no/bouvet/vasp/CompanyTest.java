@@ -18,7 +18,7 @@ import org.w3c.dom.Document;
 /**
  * Et Company har flere Workers, og ønsker å kunne generere ansatt-rapporter i
  * tillegg til å kunne beregne årlige kostnader og gjennomsnittlig timekost.
- * Akkurat nå finnes det to rapporter, en XmlReport og en JsonReport Den
+ * Akkurat nå finnes det to rapporter, en Xml-rapport og en Json-rapport Den
  * abstrakte klassen Worker har to implementasjoner, Employee og Consultant.
  * Oppgaven går ut på å refaktorere slik at denne logikken flyttes ut av Worker
  * og sub-klasser uten å bryte testene. Bruk Strategy til å generere rapporter
@@ -33,7 +33,7 @@ public class CompanyTest {
 	@Test
 	public void generateJsonReport_should_return_all_properties_of_all_workers_as_Json() {
 		Company company = createTestCompany();
-		company.setReportStrategy(new JsonReport());
+		company.setReportStrategy(new JsonReportStrategy());
 		String jsonReport = company.generateReport();
 
 		JSONObject jsonObject = new JSONObject(jsonReport);
@@ -52,7 +52,7 @@ public class CompanyTest {
 	@Test
 	public void generateXmlReport_should_return_all_properties_of_all_workers_as_Xml() throws Exception {
 		Company company = createTestCompany();
-		company.setReportStrategy(new XmlReport());
+		company.setReportStrategy(new XmlReportStrategy());
 		String xmlReport = company.generateReport();
 
 		XPath xpath = XPathFactory.newInstance().newXPath();

@@ -37,7 +37,6 @@ public class Company {
 
 		HourlyCostVisitor visitor = new HourlyCostVisitor();
 		workers.forEach(worker -> worker.accept(visitor));
-
-		return Math.round(100 * visitor.getHourlyCost() / workers.size()) / 100.0;
+		return visitor.getAverageHourlyCost();
 	}
 }

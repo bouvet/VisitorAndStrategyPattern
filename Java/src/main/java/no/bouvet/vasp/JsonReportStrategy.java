@@ -11,13 +11,13 @@ import com.google.common.base.Joiner;
  * Rapport-strategi som genererer en rapport på JSON-format.
  *
  */
-public class JsonReport implements ReportStrategy {
+public class JsonReportStrategy implements ReportStrategy {
 
 	@Override
 	public String generateReport(List<Worker> workers) {
 		StringBuilder reportBuilder = new StringBuilder();
 		List<String> workerReports = workers.stream()
-				.map(JsonReport::generateWorkerReport)
+				.map(JsonReportStrategy::generateWorkerReport)
 				.collect(toList());
 		
 		reportBuilder.append("{\"Workers\": [");
