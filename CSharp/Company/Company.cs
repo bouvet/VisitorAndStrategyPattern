@@ -44,15 +44,12 @@ namespace Company
 
         public decimal CalculateAverageHourlyCost()
         {
-            if (_workers.Count == 0)
-                return 0;
-
             var visitor = new HourlyCostVisitor();
             foreach (var worker in _workers)
             {
                 worker.Accept(visitor);
             }
-            return Math.Round(visitor.HourlyCost / _workers.Count, 2);
+            return visitor.AvarageHourlyCost;
         }
 
         private string GenerateReport(ReportVisitor reportVisitor)

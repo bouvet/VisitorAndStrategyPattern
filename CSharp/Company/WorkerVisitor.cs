@@ -28,21 +28,24 @@ namespace Company
 
     public class HourlyCostVisitor : IWorkerVisitor
     {
-        private decimal _hourlyCost;
+        private decimal _sumHourlyCost;
+        private int _numberOfWorkers;
 
         public void Visit(Employee employee)
         {
             var hoursPerMonth = (decimal) (37.5 * 4) * (employee.ParttimePercentage / 100);
-            _hourlyCost += Math.Round(employee.MonthySalary / hoursPerMonth, 2);
+            _sumHourlyCost += Math.Round(employee.MonthySalary / hoursPerMonth, 2);
+            _numberOfWorkers++;
         }
 
         public void Visit(Consultant consultant)
         {
             var hoursPerMonth = (decimal) 37.5 * 4;
-            _hourlyCost += Math.Round(consultant.MonthlyFee / hoursPerMonth, 2);
+            _sumHourlyCost += Math.Round(consultant.MonthlyFee / hoursPerMonth, 2);
+            _numberOfWorkers++;
         }
 
-        public decimal HourlyCost { get { return _hourlyCost; } }
+        public decimal AvarageHourlyCost { get { return _numberOfWorkers == 0 ? 0 : Math.Round(_sumHourlyCost / _numberOfWorkers, 2); } }
     }
 
     public class ReportVisitor : IWorkerVisitor
