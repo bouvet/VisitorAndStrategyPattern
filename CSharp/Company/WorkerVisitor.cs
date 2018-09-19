@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Company
 {
@@ -51,13 +52,26 @@ namespace Company
     public class ReportVisitor : IWorkerVisitor
     {
         private readonly IReportStrategy _reportStrategy;
+        private List<string> _workerReports = new List<string>();
 
         public ReportVisitor(IReportStrategy reportStrategy)
         {
             _reportStrategy = reportStrategy;
         }
 
-        public string Report { get; private set; }
+        public string Report
+        {
+            get
+            {
+                var reportBuilder = new StringBuilder(_reportStrategy.GenerateReportHeader());
+                foreach (var workerReport in _workerReports)
+                {
+                    reportBuilder.Append(workerReport);
+                }
+                reportBuilder.Append(_reportStrategy.GenerateReportFooter());
+                return reportBuilder.ToString();
+            }
+        }
 
         public void Visit(Employee employee)
         {
@@ -66,7 +80,7 @@ namespace Company
             reportData.Add("WorkerType",  employee.WorkerType);
             reportData.Add("Position", employee.Position);
             reportData.Add("MonthlySalary", employee.MonthySalary.ToString());
-            Report = _reportStrategy.GenerateWorkerReport(reportData);
+            _workerReports.Add(_reportStrategy.GenerateWorkerReport(reportData));
         }
 
         public void Visit(Consultant consultant)
@@ -76,17 +90,7 @@ namespace Company
             reportData.Add("WorkerType", consultant.WorkerType);
             reportData.Add("Company", consultant.Company);
             reportData.Add("MonthlyFee", consultant.MonthlyFee.ToString());
-            Report = _reportStrategy.GenerateWorkerReport(reportData);
-        }
-
-        public string GenerateReportHeader()
-        {
-            return _reportStrategy.GenerateReportHeader();
-        }
-
-        public string GenerateReportFooter()
-        {
-            return _reportStrategy.GenerateReportFooter();
+            _workerReports.Add(_reportStrategy.GenerateWorkerReport(reportData));
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Company
         string GenerateReportFooter();
     }
 
-    public class XmlReport : IReportStrategy
+    public class XmlReportStrategy : IReportStrategy
     {
         public string GenerateWorkerReport(Dictionary<string, string> reportData)
         {
@@ -36,7 +36,7 @@ namespace Company
         }
     }
 
-    public class JsonReport : IReportStrategy
+    public class JsonReportStrategy : IReportStrategy
     {
         public string GenerateWorkerReport(Dictionary<string, string> reportData)
         {

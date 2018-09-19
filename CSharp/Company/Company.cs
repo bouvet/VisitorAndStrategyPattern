@@ -7,6 +7,7 @@ namespace Company
     public class Company
     {
         private readonly IList<Worker> _workers;
+        private IReportStrategy _reportStrategy;
 
         public Company()
         {
@@ -18,18 +19,19 @@ namespace Company
             _workers.Add(worker);
         }
 
-        public string GenerateJsonReport()
+        public void SetReportStrategy(IReportStrategy reportStrategy)
         {
-            // Strategy pattern: Vi endrer oppførsel, slik at visitor vil generere en Json-rapport
-            var reportVisitor = new ReportVisitor(new JsonReport());
-            return GenerateReport(reportVisitor);
+            _reportStrategy = reportStrategy;
         }
 
-        public string GenerateXmlReport()
+        public string GenerateReport()
         {
-            // Strategy pattern: Vi endrer oppførsel, slik at visitor vil generere en Xml-rapport
-            var reportVisitor = new ReportVisitor(new XmlReport());
-            return GenerateReport(reportVisitor);
+            var visitor = new ReportVisitor(_reportStrategy);
+            foreach (var worker in _workers)
+            {
+                worker.Accept(visitor);
+            }
+            return visitor.Report;
         }
 
         public decimal CalculateYearlyCost()
@@ -50,20 +52,6 @@ namespace Company
                 worker.Accept(visitor);
             }
             return visitor.AvarageHourlyCost;
-        }
-
-        private string GenerateReport(ReportVisitor reportVisitor)
-        {
-            var reportBuilder = new StringBuilder(reportVisitor.GenerateReportHeader());
-
-            foreach (var worker in _workers)
-            {
-                worker.Accept(reportVisitor);
-                reportBuilder.AppendLine(reportVisitor.Report);
-            }
-
-            reportBuilder.AppendLine(reportVisitor.GenerateReportFooter());
-            return reportBuilder.ToString();
         }
     }
 }
