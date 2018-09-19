@@ -2,7 +2,7 @@
 
 ## Strategy-pattern for rapporter
 
-Logikken for de ulike rapport-formatene (XML, JSON) er nå skilt ut i egne klasser **XmlReport** og **JsonReport** som implementerer grensesnittet **ReportStrategy**. Metoden **generateReport** tar en liste med **Worker** og hver strategi-implementasjon produserer rapporten på sitt format. Dette åpner også for å utvide med nye implementasjoner for andre rapport-formater.
+Logikken for de ulike rapport-formatene (XML, JSON) er nå skilt ut i egne klasser **XmlReportStrategy** og **JsonReportStrategy** som implementerer grensesnittet **ReportStrategy**. Metoden **generateReport** tar en liste med **Worker** og hver strategi-implementasjon produserer rapporten på sitt format. Dette åpner også for å utvide med nye implementasjoner for andre rapport-formater.
 
 ## Visitor-pattern for kostnadsberegninger
 
